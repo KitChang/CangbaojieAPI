@@ -10,7 +10,7 @@ module.exports = {
         var sessionId = req.param('session');
         auth.getUserId(sessionId, function(err, appUserId){
             if(!appUserId){
-                res.status(400);
+                res.status(401);
                 res.json({message: "Not authenticated"});
                 res.end();
                 return;
@@ -66,7 +66,7 @@ module.exports = {
         var lowCode = req.param('lowCode');
         auth.getUserId(sessionId, function(err, appUserId){
             if(!appUserId){
-                res.status(400);
+                res.status(401);
                 res.json({message: "Not authenticated"});
                 res.end();
                 return;

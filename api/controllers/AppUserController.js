@@ -104,14 +104,18 @@ module.exports = {
             sessionId = "-1";
         }
         auth.getUserId(sessionId, function(err, appUserId){
+            if(err){
+                res.status(500);
+                res.end();
+                return;
+            }
+            if(!appUserId){
+                res.status(401);
+                res.end();
+                return;
+            }
             AppUser.findOne({id: appUserId}).exec(function (err, appuser) {
-                if(err)
-                {
-                    res.status(401);
-                    res.end();
-                    return;
-                }
-                if(appuser==null)
+                if(!appuser)
                 {
                     console.log("appuser not found");
                     res.status(400);

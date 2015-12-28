@@ -1,0 +1,149 @@
+
+body {
+  min-height: 2000px;
+}
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;
+}
+
+
+.v4-tease {
+  display: block;
+  padding: 15px 20px;
+  color: yellow;
+  text-align: center;
+  background-color: #0275d8;
+}
+.v4-tease:hover {
+  text-decoration: none;
+  background-color: #0269c2;
+}
+
+.panel
+{
+  float: left;
+  margin: 12px;
+}
+
+.where
+{
+    padding: 5px 0px;
+}
+
+.panel-elem
+{
+    margin-bottom: 15px;
+    
+}
+
+.clear-both
+{
+    clear: both;
+}
+.table > tbody > tr > td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: middle;
+  border-top: 1px solid #ddd;
+}
+
+
+
+.content {
+    padding-top: 60px;
+    padding-bottom: 60px
+}
+
+.navbar-default {
+
+  background-image: none;
+  background: yellow;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .active > a {
+  background-image: none;
+}
+.navbar-brand,
+.navbar-nav > li > a {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+  font-weight: bold;
+}
+
+.footer {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 10px rgba(0, 0, 0, .075);
+  border: 1px solid;
+  border-color: #e7e7e7;
+  left: 0;
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:60px;
+  background-color:yellow;
+
+}
+
+.form-control {
+    width: 200px;
+}
+.couponExpiredAt_day, .couponExpiredAt_hour, .couponExpiredAt_minute, .couponExpiredAt_second{
+    width: 80px;
+}
+#perform_timeout_day, #perform_timeout_hour, #perform_timeout_minute, #perform_timeout_second{
+    width: 80px;
+}
+
+
+.panel {
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+.panel-default > .panel-heading {
+  background-image: none;
+  background: yellow;
+}
+.panel-primary > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #337ab7 0%, #2e6da4 100%);
+  background-image:      -o-linear-gradient(top, #337ab7 0%, #2e6da4 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#337ab7), to(#2e6da4));
+  background-image:         linear-gradient(to bottom, #337ab7 0%, #2e6da4 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff2e6da4', GradientType=0);
+  background-repeat: repeat-x;
+}
+
+.full-width {
+    width: 100%;
+}
+.right {
+    float: right;
+    margin-right: 5px;
+}
+
+.btn-default {
+  text-shadow: 0 1px 0 #fff;
+  background-image: none;
+  background-repeat: repeat-x;
+  border-color: #dbdbdb;
+  border-color: #ccc;
+}
+.btn-default:hover,
+.btn-default:focus {
+  background-color: #e0e0e0;
+  background-position: 0 -15px;
+}
+.mandatory {
+    color: red;
+}
+.btn-default:active,
+.btn-default.active {
+  background-color: #e0e0e0;
+  border-color: #dbdbdb;
+}
+
+.login-logo,.register-logo{font-size:35px;text-align:center;margin-bottom:25px;font-weight:300}.login-logo a,.register-logo a{color:#444}.login-page,.register-page{background:#d2d6de}.login-box,.register-box{width:360px;margin:7% auto}@media (max-width:768px){.login-box,.register-box{width:90%;margin-top:20px}}.login-box-body,.register-box-body{background:#fff;padding:20px;border-top:0;color:#666}.login-box-body .form-control-feedback,.register-box-body .form-control-feedback{color:#777}.login-box-msg,.register-box-msg{margin:0;text-align:center;padding:0 20px 20px 20px}

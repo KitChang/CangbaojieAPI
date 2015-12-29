@@ -8,6 +8,7 @@ var random = require("random-js");
 var auth = require("../lib/auth");
 var logger = sails.config.log4js.getLogger('cangbaojie');
 var Device = require("../lib/device");
+var moment = require('moment');
 function win(probability) {
     var scaleFactor = 100;
     var range = probability*scaleFactor;

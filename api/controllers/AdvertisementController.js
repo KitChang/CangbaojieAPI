@@ -279,6 +279,7 @@ module.exports = {
                         retAd.thirdPrize = ad.thirdPrize;
                         retAd.fourthPrize = ad.fourthPrize;
                         retAd.fifthPrize = ad.fifthPrize;
+                        retAd.quiz = ad.quiz;
                         res.json(retAd); 
                         res.end();
                         now = moment().toDate();

@@ -42,6 +42,18 @@ Device.findOne = function(id, cb){
 
     })         
 },
+Device.getId = function(option, cb){
+    request({url: host+":"+port+"/device/id",
+     qs: option
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var result = body;
+            cb(null, result);
+        }else{
+            cb(error);
+        }
+    })  
+},
 Device.updateCbjTag = function(id, cbjTag, cb){
     request.post({url:host+":"+port+"/device/cbjTag", form: {id: id, cbjTag: cbjTag}}, function(err,httpResponse,body){
         console.log(httpResponse.statusCode);

@@ -90,15 +90,15 @@ module.exports = {
                         req.session.authenType = "wechat";
                         sessionId = req.session.id;
                         res.status(200);
-                        res.json({message: "Authenticated", user: {id: createdUser.id, name: createdUser.nickname, phone: createdUser.phone, verified: createdUser.verified }, session_id: sessionId});
+                        res.json({message: "Authenticated", user: {id: createdUser.id, name: createdUser.nickname, phone: createdUser.phone, verified: createdUser.verified }, session: sessionId});
                         return;
                     })
                 } else {
-                    req.session.user = openid;
+                    req.session.user = user.id;
                     req.session.authenType = "wechat";
                     sessionId = req.session.id;
                     res.status(200);
-                    res.json({message: "Authenticated", user: {id: user.id, name: user.nickname, phone: user.phone, verified: user.verified}, session_id: sessionId});
+                    res.json({message: "Authenticated", user: {id: user.id, name: user.nickname, phone: user.phone, verified: user.verified}, session: sessionId});
                     return;
                 }
             });

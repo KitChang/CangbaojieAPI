@@ -34,6 +34,7 @@ Device.search = function(option, cb){
 Device.findOne = function(id, cb){
     request(host+":"+port+"/device/"+id, function (error, response, body) {
         if (!error && response.statusCode == 200) {
+            console.log("body"+body);
             var result = JSON.parse(body);
             cb(null, result);
         }else{

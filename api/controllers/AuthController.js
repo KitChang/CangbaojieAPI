@@ -125,43 +125,24 @@ module.exports = {
             var session2 = JSON.parse(sessionFound.session);
             var authenType = session2.authenType;
             var userId = session2.user;
-            if(authenType=="wechat"){
-                AppUser.findOne({openid: userId}).exec(function(err, userFound){
-                    if(err){
-                        res.status(500);
-                        res.json({message: "Not authenticated"});
-                        return;
-                    }
-                    if(!userFound){
-                        res.status(400);
-                        res.json({message: "Not authenticated"});
-                        return;
-                    }
-                    res.status(200);
-                    res.json({message: "Authenticated", user: { id: userFound.id, name: userFound.nickname, phone: userFound.phone, phoneVerified: userFound.phoneVerified}});
+            
+            AppUser.findOne({id: userId}).exec(function(err, userFound){
+                if(err){
+                    res.status(500);
+                    res.json({message: "Not authenticated"});
                     return;
-                })
-            }else if(authenType=="local"){
-                AppUser.findOne({id: userId}).exec(function(err, userFound){
-                    if(err){
-                        res.status(500);
-                        res.json({message: "Not authenticated"});
-                        return;
-                    }
-                    if(!userFound){
-                        res.status(400);
-                        res.json({message: "Not authenticated"});
-                        return;
-                    }
-                    res.status(200);
-                    res.json({message: "Authenticated", user: { id: userFound.id, name: userFound.username, phone: userFound.phone, phoneVerified: userFound.phoneVerified}});
+                }
+                if(!userFound){
+                    res.status(400);
+                    res.json({message: "Not authenticated"});
                     return;
-                });
-            }else{
-                res.status(400);
-                res.json({message: "Not authenticated"});
+                }
+                res.status(200);
+                res.json({message: "Authenticated", user: { id: userFound.id, name: userFound.nickname, phone: userFound.phone, phoneVerified: userFound.phoneVerified}});
                 return;
-            }
+            })
+
+            
         });
                 
     }

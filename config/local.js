@@ -62,7 +62,7 @@ module.exports = {
 
     port: process.env.PORT || 3003,
     ibeaconMacaoApiHost: 'localhost',
-    ibeaconMacaoApiPort: 3001
+    ibeaconMacaoApiPort: 30012
 
   /***************************************************************************
    * The runtime "environment" of your Sails app is either typically         *

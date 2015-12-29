@@ -280,6 +280,7 @@ module.exports = {
                         retAd.fourthPrize = ad.fourthPrize;
                         retAd.fifthPrize = ad.fifthPrize;
                         retAd.quiz = ad.quiz;
+                        retAd.drawPerformInterval = ad.drawPerformInterval;
                         res.json(retAd); 
                         res.end();
                         now = moment().toDate();

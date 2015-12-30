@@ -285,10 +285,13 @@ module.exports = {
                         res.end();
                         now = moment().toDate();
                         DeviceMonitor.findOne({device: deviceId}).exec(function(err, deviceMon){
+                            var identifier = "";
+                                if(dev.identifier!=undefined&&dev.identifier!="")
+                                    identifier = dev.identifier;
                             if(!deviceMon){
-                                DeviceMonitor.create({device: deviceId, accessDate: now, checked: false}).exec(function(){});
+                                DeviceMonitor.create({device: deviceId, accessDate: now, verifiedDate: now, identifier: identifier}).exec(function(){});
                             }else{
-                                DeviceMonitor.update({device: deviceId}, {accessDate: now}).exec(function(){});
+                                DeviceMonitor.update({device: deviceId}, {accessDate: now, identifier: identifier}).exec(function(){});
                             }
                         });
                         var clientid = ad.client.id;

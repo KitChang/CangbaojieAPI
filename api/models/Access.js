@@ -16,6 +16,9 @@ module.exports = {
     },
     client: {
         model: 'client'
+    }, 
+    appUser: {
+        model: 'AppUser'
     }
   }
 };

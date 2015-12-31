@@ -1,11 +1,11 @@
 var Device = module.exports = {};
 var request = require("request");
-url = "http://"+sails.config.ibeaconMacaoApiHost;
-port = sails.config.ibeaconMacaoApiPort;
-url = url+":"+port+"/";
+url = "http://"+sails.config.ibeaconMacauApiHost;
+port = sails.config.ibeaconMacauApiPort;
+url = url+":"+port;
 Device.find = function(option, cb){
     request({
-        url: url + "device",
+        url: url + "/device",
         qs: option
     }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -19,7 +19,7 @@ Device.find = function(option, cb){
 
 Device.search = function(option, cb){
     request(
-    {url: url + "device/search",
+    {url: url + "/device/search",
      qs: option
     }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -31,7 +31,7 @@ Device.search = function(option, cb){
     })       
 },
 Device.findOne = function(id, cb){
-    request(host+":"+port+"/device/"+id, function (error, response, body) {
+    request(url+"/device/"+id, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var result = JSON.parse(body);
             cb(null, result);
@@ -41,7 +41,7 @@ Device.findOne = function(id, cb){
     })         
 },
 Device.getId = function(option, cb){
-    request({url: host+":"+port+"/device/id",
+    request({url: url+"/device/id",
      qs: option
     }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -53,7 +53,7 @@ Device.getId = function(option, cb){
     })  
 },
 Device.updateCbjTag = function(id, cbjTag, cb){
-    request.post({url:host+":"+port+"/device/cbjTag", form: {id: id, cbjTag: cbjTag}}, function(err,httpResponse,body){
+    request.post({url:url+"/device/cbjTag", form: {id: id, cbjTag: cbjTag}}, function(err,httpResponse,body){
         console.log(httpResponse.statusCode);
         if (httpResponse.statusCode==200) {
             var result = JSON.parse(body);

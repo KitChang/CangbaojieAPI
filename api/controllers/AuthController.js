@@ -20,7 +20,7 @@ module.exports = {
         if(!/\d{11}/.test(phone)){
             err = true;
         }
-        if(password.length <= 8){
+        if(password.length < 8){
             err = true;
         }
         if(err){
@@ -133,7 +133,7 @@ module.exports = {
                     return;
                 }
                 res.status(200);
-                res.json({message: "Authenticated", user: { id: userFound.id, name: userFound.username, phone: userFound.phone, phoneVerified: userFound.phoneVerified}});
+                res.json({message: "Authenticated", user: { id: userFound.id, name: userFound.username, phone: userFo   und.phone, phoneVerified: userFound.phoneVerified}});
                 return;
             })
 

@@ -10,27 +10,11 @@ var parseString = require('xml2js').parseString;
 var moment = require('moment');
 
 module.exports = {
-	create: function(req, res){
-        var username = req.param('username');
-        var password = req.param('password');
-        var gender = req.param("gender");
-        var phone = req.param("phone");
-        AppUser.create({username: username, password: password, gender: gender, phone: phone}).exec(function(err, result){
-            if (err) {
-                res.status(500);
-                res.end();
-            }
-            res.status(200);
-            res.end();
-            });
-    },
-    register: function(req, res){
+	register: function(req, res){
         var phone = req.param('phone');
         var password = req.param('password');
         var username = req.param('username');
         var sex = req.param("sex");
-        
-        
         var errObj = {}, phoneErr = null, passwordErr = null, usernameErr = null, sexErr = null;
         if(!phone||!password||!username||!sex){
             res.status(400);
@@ -41,7 +25,6 @@ module.exports = {
         if(phone.length != 11 || !phone.match(phoneReg)){
             phoneErr = "电话号码需为11位数字";
         }
-        
         if(password.length < 8){
             passwordErr = "密码长度至少8位";
         }
@@ -94,13 +77,11 @@ module.exports = {
             res.status(200);
             res.json({message: "Logout"});
         });;
-        
     }
-    //Kit
     ,
     phoneRegister: function (req,res) {
         var sessionId = req.param('session');
-        if(sessionId==null){
+        if(!sessionId){
             sessionId = "-1";
         }
         auth.getUserId(sessionId, function(err, appUserId){
@@ -114,27 +95,25 @@ module.exports = {
                 res.end();
                 return;
             }
-            AppUser.findOne({id: appUserId}).exec(function (err, appuser) {
-                if(!appuser)
+            AppUser.findOne({id: appUserId}).exec(function (err, appUserFound) {
+                if(!appUserFound)
                 {
-                    console.log("appuser not found");
                     res.status(400);
                     res.end();
                     return;
                 }
-                if (appuser.phoneVerified == true) {
-                    console.log("appuser is phoneVerified");
+                if (appUserFound.phoneVerified == true) {
                     res.status(204);
-                    res.json({message: 'user is verified'});
+                    res.json({message: 'User is verified'});
                     return;
                 }
                 var number = Math.floor(Math.random()*(999999-100000+1)+100000);
-                appuser.verifyCode = number.toString();
+                appUserFound.verifyCode = number.toString();
                 //var today = new Date('UTC');
                 var expire = moment().utcOffset("+08:00").add(1,'d');
                 //expire.setTime(expire.getTime() + 60 *1000); //1 * 24 * 60 * 60 * 1000
-                appuser.verifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
-                appuser.save(function (err, appuser) {
+                appUserFound.verifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
+                appUserFound.save(function (err, appuser) {
                     if (err) {
                         res.status(500);
                         res.end();

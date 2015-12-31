@@ -41,6 +41,8 @@ Device.findOne = function(id, cb){
     })         
 },
 Device.getId = function(option, cb){
+    var appId = sails.config.maximityAppId;
+    var appKey = sails.config.maximityAppKey;
     request({url: url+"/device/id",
      qs: option
     }, function (error, response, body) {

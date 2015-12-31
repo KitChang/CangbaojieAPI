@@ -316,10 +316,11 @@ module.exports = {
                         region = (!dev.region) ? "" : dev.region;
                         street = (!dev.street) ? "" : dev.street;
                         category = (!ad.category) ? "" : ad.category;
-                        access.create({appUser: appUserId, device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
-                        });
+                        
                         if(appUserId){
                             logger.info("User "+appUserId+" received advertisement "+adId);
+                            access.create({appUser: appUserId, device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
+                        });
                         }
                         return;
                 });

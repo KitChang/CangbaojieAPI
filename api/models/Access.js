@@ -9,7 +9,7 @@ module.exports = {
   identity: 'access',
   attributes: {
     device: {
-        model: 'device'
+        type: 'string'
     },
     advertisement: {
         model: 'advertisement'

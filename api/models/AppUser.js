@@ -8,10 +8,32 @@
 module.exports = {
   identity: 'AppUser',
   attributes: {
-      verified : {
+      phoneVerified : {
           type: 'boolean',
           defaultsTo: false, 
           required: true
+      },
+      sex: {
+          type: 'string',
+          enum: ['1', '2'],
+          required: true
+      },
+      username: {
+          type: 'string', 
+          required: true
+      },
+      phone: {
+          type: 'string',
+          defaultsTo: ''
+      },
+      authType: {
+          type: 'string',
+          enum: ['local', 'wechat'],
+          required: true
+      },
+      password: {
+          type: 'string',
+          defaultsTo: ''
       }
   }
 };

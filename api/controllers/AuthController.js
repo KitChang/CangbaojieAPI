@@ -10,24 +10,24 @@ module.exports = {
 	local: function(req, res){
         var phone = req.param('phone');
         var password = req.param('password');
-        
-        var errMsg = null;
+        var err = false
+        if(!password||!phone){
+            err = true;
+        }
         if(phone.length != 11){
-            errMsg = "Invalid phone or password";
+            err = true;
         }
-        var phoneNumber = parseInt(phone);
-        if(phoneNumber=='NaN'){
-            errMsg = "Invalid phone or password";
+        if(!/\d{11}/.test(phone)){
+            err = true;
         }
-        if(password.length < 8){
-            errMsg = "Invalid phone or password";
+        if(password.length <= 8){
+            err = true;
         }
-        if(errMsg){
+        if(err){
             res.status(400);
-            res.json({message: errMsg});
+            res.json({message: "Invalid phone and password"});
             return;
         }
-        
         AppUser.findOne({phone: phone, password: password}).exec(function(err, userFound){
             if (err) {
                 res.status(500);
@@ -39,9 +39,8 @@ module.exports = {
                 res.json({message: "Not Authenticated"});
                 return;
             }
-            
             req.session.user= userFound.id;
-            req.session.authenType = "local";
+            req.session.authType = "local";
             sessionId = req.session.id;
             res.json({message: "Authenticated", session: sessionId, user: {id: userFound.id, name: userFound.username, phone: userFound.phone, phoneVerified: userFound.phoneVerified}});
             
@@ -55,8 +54,7 @@ module.exports = {
         
     client.getAccessToken(code, function (err, result) {
         if(err){
-            console.log(err);
-            res.status(400);
+            res.status(500);
             res.json({message: "Not authenticated"});
             return;
         }
@@ -65,7 +63,6 @@ module.exports = {
         openid = result.data.openid;
         client.getUser(openid, function (err, result) {
             if(err){
-                console.log("68");
                 res.status(500);
                 res.json({message: "Not authenticated"});
                 return;
@@ -73,32 +70,30 @@ module.exports = {
             var userInfo = result;
             AppUser.findOne({openid: openid}).exec(function(err, user){
                 if(err){
-                    console.log("err");
                     res.status(500);
                     res.json({message: "Not authenticated"});
                     return;
                 }
                 if(!user){
-                    AppUser.create({openid: openid, nickname: userInfo.nickname, sex: userInfo.sex, phone: "", phoneVerified: false, authenType: "wechat"}).exec(function(err, createdUser){
+                    AppUser.create({openid: openid, username: userInfo.nickname, sex: userInfo.sex, phone: "", phoneVerified: false, authType: "wechat"}).exec(function(err, createdUser){
                         if(err){
                             res.status(500);
-                            console.log("85");
                             res.json({message: "Not authenticated"});
                             return;
                         }
                         req.session.user = createdUser.id;
-                        req.session.authenType = "wechat";
+                        req.session.authType = "wechat";
                         sessionId = req.session.id;
                         res.status(200);
-                        res.json({message: "Authenticated", user: {id: createdUser.id, name: createdUser.nickname, phone: createdUser.phone, verified: createdUser.verified }, session: sessionId});
+                        res.json({message: "Authenticated", user: {id: createdUser.id, name: createdUser.username, phone: createdUser.phone, phoneVerified: createdUser.phoneVerified }, session: sessionId});
                         return;
                     })
                 } else {
                     req.session.user = user.id;
-                    req.session.authenType = "wechat";
+                    req.session.authType = "wechat";
                     sessionId = req.session.id;
                     res.status(200);
-                    res.json({message: "Authenticated", user: {id: user.id, name: user.nickname, phone: user.phone, verified: user.verified}, session: sessionId});
+                    res.json({message: "Authenticated", user: {id: user.id, name: user.username, phone: user.phone, phoneVerified: user.phoneVerified}, session: sessionId});
                     return;
                 }
             });
@@ -123,7 +118,7 @@ module.exports = {
                 return;
             }
             var session2 = JSON.parse(sessionFound.session);
-            var authenType = session2.authenType;
+            var authType = session2.authType;
             var userId = session2.user;
             
             AppUser.findOne({id: userId}).exec(function(err, userFound){
@@ -138,7 +133,7 @@ module.exports = {
                     return;
                 }
                 res.status(200);
-                res.json({message: "Authenticated", user: { id: userFound.id, name: userFound.nickname, phone: userFound.phone, phoneVerified: userFound.phoneVerified}});
+                res.json({message: "Authenticated", user: { id: userFound.id, name: userFound.username, phone: userFound.phone, phoneVerified: userFound.phoneVerified}});
                 return;
             })
 

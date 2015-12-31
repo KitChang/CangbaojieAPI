@@ -32,7 +32,7 @@ module.exports = {
         
         
         var errObj = {}, phoneErr = null, passwordErr = null, usernameErr = null, sexErr = null;
-        if(phone==null||password==null||username==null||sex==null){
+        if(!phone||!password||!username||!sex){
             res.status(400);
             res.json({message: "参数不足"});
             return;
@@ -75,12 +75,12 @@ module.exports = {
                 res.json({message: "Not registered"});
                 return;
             }
-            if(appUserFound!=null){
+            if(appUserFound){
                 res.status(400);
                 res.json({message: "User already found"});
                 return;
             }
-            AppUser.create({phone: phone, password: password, username: username, phoneVerified: false, auth_type: "local", sex: sex}).exec(function(err, createdUser){
+            AppUser.create({phone: phone, password: password, username: username, phoneVerified: false, authType: "local", sex: sex}).exec(function(err, createdUser){
             res.status(200);
             res.json({message: "Registered"});
         });

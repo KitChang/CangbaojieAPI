@@ -19,6 +19,11 @@ module.exports = {
     }, 
     appUser: {
         model: 'AppUser'
+    },
+    locationType: {
+        type: 'string',
+        enum: ['公交站','公交车','电梯', '路名牌'],
+        defaultsTo: ""
     }
   }
 };

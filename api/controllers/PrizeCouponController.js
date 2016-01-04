@@ -114,6 +114,22 @@ module.exports = {
                                 res.end();
                                 return;
                             }
+                            if (wonPrize=="1") {
+                                Advertisement.update({id: adFound._id}, {redeem1PrizeQuantity: adFound.redeem1PrizeQuantity+1}).exec();
+                            }
+                            if (wonPrize=="2") {
+                                Advertisement.update({id: adFound._id}, {redeem2PrizeQuantity: adFound.redeem2PrizeQuantity+1}).exec();
+                            }
+                            if (wonPrize=="3") {
+                                Advertisement.update({id: adFound._id}, {redeem3PrizeQuantity: adFound.redeem3PrizeQuantity+1}).exec();
+                            }
+                            if (wonPrize=="4") {
+                                Advertisement.update({id: adFound._id}, {redeem4PrizeQuantity: adFound.redeem4PrizeQuantity+1}).exec();
+                            }
+                            if (wonPrize=="5") {
+                                Advertisement.update({id: adFound._id}, {redeem5PrizeQuantity: adFound.redeem5PrizeQuantity+1}).exec();
+                            }
+                            
                             res.status(201);
                             res.json({message: "Redemption authorized"});
                             res.end();

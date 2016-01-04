@@ -115,19 +115,24 @@ module.exports = {
                                 return;
                             }
                             if (wonPrize=="1") {
-                                advertisement.update({id: adFound._id}, {redeem1PrizeQuantity: adFound.redeem1PrizeQuantity+1}).exec();
+                                console.log(advertisementId + " "+adFound.redeem1PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem1PrizeQuantity: adFound.redeem1PrizeQuantity+1}).exec();
                             }
                             if (wonPrize=="2") {
-                                advertisement.update({id: adFound._id}, {redeem2PrizeQuantity: adFound.redeem2PrizeQuantity+1}).exec();
+                                console.log(advertisementId + " "+adFound.redeem2PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem2PrizeQuantity: adFound.redeem2PrizeQuantity+1}).exec();
                             }
                             if (wonPrize=="3") {
-                                advertisement.update({id: adFound._id}, {redeem3PrizeQuantity: adFound.redeem3PrizeQuantity+1}).exec();
+                                console.log(advertisementId + " "+adFound.redeem3PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem3PrizeQuantity: adFound.redeem3PrizeQuantity+1}).exec();
                             }
                             if (wonPrize=="4") {
-                                advertisement.update({id: adFound._id}, {redeem4PrizeQuantity: adFound.redeem4PrizeQuantity+1}).exec();
+                                console.log(advertisementId + " "+adFound.redeem4PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem4PrizeQuantity: adFound.redeem4PrizeQuantity+1}).exec();
                             }
                             if (wonPrize=="5") {
-                                advertisement.update({id: adFound._id}, {redeem5PrizeQuantity: adFound.redeem5PrizeQuantity+1}).exec();
+                                console.log(advertisementId + " "+adFound.redeem5PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem5PrizeQuantity: adFound.redeem5PrizeQuantity+1}).exec();
                             }
                             
                             res.status(201);

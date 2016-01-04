@@ -23,7 +23,7 @@
     "sails": "~0.11.2",
     "sails-disk": "~0.10.0",
     "sails-mongo": "0.11.4",
-    "connect-mongo": "*",
+    "connect-mongo": "0.8.2",
     "random-js": "*",
     "request":"*",
     "wechat-oauth": "*",

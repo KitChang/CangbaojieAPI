@@ -6,11 +6,11 @@
 */
 
 module.exports = {
-
+  identity: 'AppUserDrawInterval',
   attributes: {
       appUser: {model: 'AppUser'},
       redrawAt: {type: 'date'},
-      advertisement: {type: 'advertisement'}
+      advertisement: {model: 'advertisement'}
   }
 };
 

@@ -168,9 +168,7 @@ module.exports = {
         
     }
     
-    redrawInterval: function(appUserId, advertisementId, drawInterval){
-    
-    }
+
     ,
     orderDraw: function(req, res){
         var advertisementId = req.param('advertisement');

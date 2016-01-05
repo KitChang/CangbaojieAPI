@@ -17,7 +17,13 @@ module.exports.bootstrap = function(cb) {
     LuckyDrawCoupon.native(function (err, LuckyDrawCoupon) {
         // define index properties
         LuckyDrawCoupon.ensureIndex( { "drawCouponExpiredAt": 1 }, { expireAfterSeconds: 0 } );
-        cb();
+        AppUserDrawInterval.native(function (err, AppUserDrawInterval) {
+        // define index properties
+            AppUserDrawInterval.ensureIndex( { "redrawAt": 1 }, { expireAfterSeconds: 0 } );
+            cb();
+        });
+        
     });
+    
     
 };

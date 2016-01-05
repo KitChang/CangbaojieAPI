@@ -66,6 +66,21 @@ module.exports = {
                         res.end();
                         return;
                     }
+                    AppUserDrawInterval.findOne({appUser: appUserId, advertisement: advertisementId}).exec(function(err, appUserDrawIntervalOne){
+                        if(appUserDrawIntervalOne){
+                            res.status(400);
+                            res.json({message: "Draw within interval"});
+                            res.end();
+                            return;
+                        }else{
+                            var drawPerformInterval = ad.drawPerformInterval;
+                            drawPerformInterval = moment().add(drawPerformInterval, "seconds").toDate();
+                            AppUserDrawInterval.create({appUser: appUserId, advertisement: advertisementId, redrawAt: drawPerformInterval});
+                        }
+                    });
+                    
+                    
+                    
                     var firstPrizeProbability = ad.probabilityDraw.firstPrizeProbability;
                     var secondPrizeProbability = ad.probabilityDraw.secondPrizeProbability;
                     var thirdPrizeProbability = ad.probabilityDraw.thirdPrizeProbability;
@@ -152,6 +167,10 @@ module.exports = {
         
         
     }
+    
+    redrawInterval: function(appUserId, advertisementId, drawInterval){
+    
+    }
     ,
     orderDraw: function(req, res){
         var advertisementId = req.param('advertisement');
@@ -179,6 +198,22 @@ module.exports = {
                         res.end();
                         return;
                     }
+                    
+                    AppUserDrawInterval.findOne({appUser: appUserId, advertisement: advertisementId}).exec(function(err, appUserDrawIntervalOne){
+                        if(appUserDrawIntervalOne){
+                            res.status(400);
+                            res.json({message: "Draw within interval"});
+                            res.end();
+                            return;
+                        }else{
+                            var drawPerformInterval = ad.drawPerformInterval;
+                            drawPerformInterval = moment().add(drawPerformInterval, "seconds").toDate();
+                            AppUserDrawInterval.create({appUser: appUserId, advertisement: advertisementId, redrawAt: drawPerformInterval});
+                        }
+                    });
+                    
+                    
+                    
                     if(ad.drawType!="order"){
                         res.status(400);
                         res.end();

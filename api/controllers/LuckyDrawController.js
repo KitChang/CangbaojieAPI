@@ -203,7 +203,7 @@ module.exports = {
                         res.end();
                         return;
                     }
-                    
+                    var today = moment().toDate();
                     AppUserDrawInterval.findOne({appUser: appUserId, advertisement: advertisementId, redrawAt: {'>': today}}).exec(function(err, appUserDrawInterval){
                         if(appUserDrawInterval){
                             res.status(400);

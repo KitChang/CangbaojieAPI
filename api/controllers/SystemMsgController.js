@@ -48,19 +48,25 @@
  	,createMsg: function (req, res) {
  		var title = req.param('title');
  		var content = req.param('content');
- 		var createdAt = req.param('createdAt');
- 		var expiredAt = req.param('expiredAt');
+ 		var createAt = req.param('createAt');
+ 		var expireAt = req.param('expireAt');
 
  		if(title==null||content==null){
             res.status(400);
             res.json({message: "参数不足"});
             return;
         }
-        if (createAt=null) {
+        if (createAt==null || createAt=="") {
         	createAt = new Date();
         }
+        else {
+            createAt = new Date(createAt);
+        }
+        if (expireAt!=null && expireAt!="") {
+            expireAt = new Date(expireAt);
+        };
         SystemMsg.create({title: title, content: content
-        	, createAt: createAt, expiredAt: expiredAt}).exec(
+        	, createAt: createAt, expireAt: expireAt}).exec(
         	function (err, systemMsg) {
         		if(err)
                 {

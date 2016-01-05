@@ -11,7 +11,7 @@ module.exports = {
       title: {type: 'string', required: true},
       content: {type: 'string', required: true},
       createAt: {type: 'date', defaultsTo: new Date()},
-      expiredAt: {type: 'date'}
+      expireAt: {type: 'date'}
   }
 };
 //Kit end

@@ -114,6 +114,37 @@ module.exports = {
                                 res.end();
                                 return;
                             }
+                            if (wonPrize=="1") {
+                                console.log(advertisementId + " "+adFound.redeem1PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem1PrizeQuantity: adFound.redeem1PrizeQuantity+1}).exec(function(){
+                                    
+                                });
+                            }
+                            if (wonPrize=="2") {
+                                console.log(advertisementId + " "+adFound.redeem2PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem2PrizeQuantity: adFound.redeem2PrizeQuantity+1}).exec(function(){
+                                    
+                                });
+                            }
+                            if (wonPrize=="3") {
+                                console.log(advertisementId + " "+adFound.redeem3PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem3PrizeQuantity: adFound.redeem3PrizeQuantity+1}).exec(function(){
+                                    
+                                });
+                            }
+                            if (wonPrize=="4") {
+                                console.log(advertisementId + " "+adFound.redeem4PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem4PrizeQuantity: adFound.redeem4PrizeQuantity+1}).exec(function(){
+                                    
+                                });
+                            }
+                            if (wonPrize=="5") {
+                                console.log(advertisementId + " "+adFound.redeem5PrizeQuantity+1);
+                                advertisement.update({id: advertisementId}, {redeem5PrizeQuantity: adFound.redeem5PrizeQuantity+1}).exec(function(){
+                                    
+                                });
+                            }
+                            
                             res.status(201);
                             res.json({message: "Redemption authorized"});
                             res.end();

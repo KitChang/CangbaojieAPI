@@ -53,6 +53,7 @@ module.exports = {
                 advertisement.findOne({id: advertisementId}).populate('probabilityDraw').exec(function(err, ad){
                     if(!ad){
                         res.status(400);
+                        res.json({message: "Advertisement not found"});
                         res.end();
                         return;
                     }
@@ -69,13 +70,12 @@ module.exports = {
                     var today = moment().toDate();
                     AppUserDrawInterval.find({appUser: appUserId, advertisement: advertisementId,redrawAt: {'>': today} }).exec(function(err, appUserDrawInterval){
                         if(appUserDrawInterval.length){
-                            res.status(400);
+                            res.status(403);
                             res.json({message: "Draw within interval"});
                             res.end();
                             return;
                         }else{
                             var drawPerformInterval = ad.drawPerformInterval;
-                            console.log("dsfsdfds"+drawPerformInterval);
                             drawPerformInterval = moment().add(drawPerformInterval, "seconds").toDate();
                             AppUserDrawInterval.create({appUser: appUserId, advertisement: advertisementId, redrawAt: drawPerformInterval}).exec(function(err){
                                 
@@ -192,21 +192,21 @@ module.exports = {
             Device.findOne(deviceId, function(err, dev){
                 if(!dev){
                     res.status(400);
-                    res.json({message: "Not authenticated"});
+                    res.json({message: "Device not found"});
                     res.end();
                     return;
                 }
                 advertisement.findOne({id: advertisementId}).exec(function(err, ad){
                     if(!ad){
                         res.status(400);
-                        res.json({message: "Not authenticated"});
+                        res.json({message: "Advertisement not found"});
                         res.end();
                         return;
                     }
                     var today = moment().toDate();
                     AppUserDrawInterval.findOne({appUser: appUserId, advertisement: advertisementId, redrawAt: {'>': today}}).exec(function(err, appUserDrawInterval){
                         if(appUserDrawInterval){
-                            res.status(400);
+                            res.status(403);
                             res.json({message: "Draw within interval"});
                             res.end();
                             return;

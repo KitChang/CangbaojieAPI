@@ -111,19 +111,21 @@ module.exports = {
                 appUserFound.verifyCode = number.toString();
                 //var today = new Date('UTC');
                 var expire = moment().utcOffset("+08:00").add(1,'d');
+                var verificationExpiredAt = moment().add(1, "day").toDate();
                 //expire.setTime(expire.getTime() + 60 *1000); //1 * 24 * 60 * 60 * 1000
                 appUserFound.verifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
+                appUserFound.verificationExpiredAt = verificationExpiredAt;
                 appUserFound.save(function (err, appuser) {
                     if (err) {
                         res.status(500);
                         res.end();
-                    return;
+                        return;
                     };
                     request.post('http://106.ihuyi.cn/webservice/sms.php?method=Submit'
                         , {form:{'account':'cf_377736392',
                                 'password':'tuQIANQIAN123',
                                 //'mobile':appuser.phone,
-                                'content': '您的验证码是：'+appuser.verifyCode+'。请不要把验证码泄露给其他人。'}}
+                                'content': '您的验证码是：'+appUserFound.verifyCode+'。请不要把验证码泄露给其他人。'}}
                         , function (err, response, result) {
                         if (err) {
                             res.status(500);
@@ -134,7 +136,7 @@ module.exports = {
                             if (err) {
                                 res.status(500);
                                 res.json({message: 'Cant receive SMS'});
-                            return;
+                                return;
                             };
                             if (object.SubmitResult.code[0] != "2") {
                                 res.status(500);
@@ -142,7 +144,8 @@ module.exports = {
                                 return;
                             };
                             res.status(200);
-                            res.json({message: 'regist success'});
+                            res.json({message: 'Verification code send'});
+                            return;
                         });
                         
                     });
@@ -156,110 +159,105 @@ module.exports = {
         var sessionId = req.param('session');
         var code = req.param('code');
         
-        if(sessionId==null||code==null){
+        if(!sessionId||!code){
             res.status(400);
             res.json({message: "参数不足"});
             return;
         }
-        if(sessionId==null){
-            sessionId = "-1";
-        }
         auth.getUserId(sessionId, function(err, appUserId){
-            AppUser.findOne({id: appUserId}).exec(function (err, appuser) {
+            if(!appUserId){
+                res.status(401);
+                res.json({message: "Not authenticated"});
+                return;
+            }
+            AppUser.findOne({id: appUserId}).exec(function (err, appUser) {
                 if(err)
+                {
+                    res.status(500);
+                    res.end();
+                    return;
+                }
+                if(!appUser)
                 {
                     res.status(401);
                     res.end();
                     return;
                 }
-                if(appuser==null)
-                {
-                    console.log("appuser not found");
-                    res.status(400);
-                    res.end();
-                    return;
-                }
-                if (appuser.phoneVerified == true) {
-                    console.log("appuser is phoneVerified");
+                if (appUser.phoneVerified == true) {
                     res.status(204);
-                    res.json({message: 'user is verified'});
+                    res.json({message: 'User is verified'});
                     return;
                 }
                 var today = moment();
-                var expire = moment(appuser.verifyExpire, "YYYY-MM-DD HH:mm:ssZZ");
-                console.log(today);
-                console.log(expire);
-                if (!expire.isValid() || today.isAfter(expire)) {
-                    console.log(today.isAfter(expire));
+                var expiredAt = moment(appuser.verificationExpiredAt);
+                
+                if (!expiredAt.isValid() || today.isAfter(expiredAt)) {
                     res.status(400);
-                    res.json({message: 'please regist first'});
+                    res.json({message: 'Please register first'});
                     return;
                 }
-                if (appuser.verifyCode == code) {
-                    appuser.phoneVerified = true;
-                    appuser.verifyCode = null;
-                    appuser.verifyExpire = null;
-                    appuser.save(function (err, appuser) {
+                if (appUser.verifyCode == code) {
+                    appUser.phoneVerified = true;
+                    appUser.verifyCode = null;
+                    appUser.verificationExpiredAt = null;
+                    appUser.save(function (err, appUserFound) {
                         if (err) {
-                            console.log('service down');
                             res.status(500);
-                            res.json({message: 'service down'});
+                            res.json({message: 'Service down'});
                             return;
                         };
-                        console.log('verify success');
                         res.status(200);
-                        res.json({message: 'verify success'});
+                        res.json({message: 'Verification successful'});
 
                     });
                 }
                 else {
-                    console.log("wrong verifyCode");
                     res.status(400);
-                    res.json({message: 'wrong code'});
+                    res.json({message: 'Invalid code'});
                     return;
                 }
-                
-
-
             });
         });
     }
     ,changePassword: function (req, res) {
         var sessionId = req.param('session');
         var password = req.param('password');
-        var newPassword = req.param('newpassword');
+        var newPassword = req.param('newPassword');
 
-        if(sessionId==null||password==null||newPassword==null){
+        if(!sessionId||!password||!newPassword){
             res.status(400);
             res.json({message: "参数不足"});
             return;
         }
         auth.getUserId(sessionId, function(err, appUserId){
-            AppUser.findOne({id: appUserId}).exec(function (err, appuser) {
+            if(!appUserId){
+                res.status(401);
+                res.json({message: "Not authenticated"});
+                return;
+            }
+            AppUser.findOne({id: appUserId}).exec(function (err, appUser) {
                 if(err)
                 {
                     res.status(401);
                     res.end();
                     return;
                 }
-                if(appuser==null)
-                {
-                    console.log("appuser not found");
-                    res.status(400);
-                    res.end();
+                if(!appUser){
+                    res.status(401);
+                    res.json({message: "Not authenticated"});
                     return;
                 }
-                if (appuser.password == password) {
+                if (appUser.password == password) {
                     if(newPassword.length < 8){
                         res.status(400);
                         res.json({message: "密码长度至少8位"});
                         return;
                     }
-                    appuser.password = newPassword;
-                    appuser.save(function (err, appuser) {
+                    appUser.password = newPassword;
+                    appUser.save(function (err, appUser) {
                         if (err) {
                             res.status(500);
-                            res.json({message: 'service down'});
+                            res.json({message: 'Service down'});
                             return;
                         }
                         res.status(200);

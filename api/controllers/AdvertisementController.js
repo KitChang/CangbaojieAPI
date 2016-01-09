@@ -281,7 +281,8 @@ module.exports = {
                         retAd.fifthPrize = ad.fifthPrize;
                         retAd.quiz = ad.quiz;
                         retAd.drawPerformInterval = ad.drawPerformInterval;
-                        retAd.indexOf = ad.indexOf;
+                        retAd.indexUrl = ad.indexUrl;
+                        retAd.mobilePhone = ad.client.mobilePhone;
                         res.json(retAd); 
                         res.end();
                         now = moment().toDate();

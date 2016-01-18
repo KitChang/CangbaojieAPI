@@ -26,7 +26,7 @@ module.exports = {
                 deviceId = deviceId.split(",");
             }
             if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
-            advertisement.find({device: deviceId}).populate('advertisementImage').exec(function(err, results){
+            advertisement.find({device: deviceId, deleted: false}).populate('advertisementImage').exec(function(err, results){
                 if (err) {
                     res.status(500);
                     res.end();
@@ -281,6 +281,8 @@ module.exports = {
                         retAd.fifthPrize = ad.fifthPrize;
                         retAd.quiz = ad.quiz;
                         retAd.drawPerformInterval = ad.drawPerformInterval;
+                        retAd.indexUrl = ad.indexUrl;
+                        retAd.mobilePhone = ad.client.mobilePhone;
                         res.json(retAd); 
                         res.end();
                         now = moment().toDate();

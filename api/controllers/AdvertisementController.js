@@ -32,7 +32,7 @@ module.exports = {
                     // body...
                     console.log(msg);
                     if (!msg) {
-                        pushMsg = msg.message;
+                        pushMsg = "藏宝街为您发现神祕宝藏，点击免费抽奖，海量奖品等你拿！";
                     };
                 });
             }

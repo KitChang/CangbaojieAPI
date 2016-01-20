@@ -26,6 +26,13 @@ module.exports = {
                 deviceId = deviceId.split(",");
             }
             if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
+            var pushMsg = "藏宝街为您发现神祕宝藏，点击免费抽奖，海量奖品等你拿！";
+            if(deviceId.length==1) {
+                devicePushMsg.findOne({device: deviceId[0]}).exec(function (err, msg) {
+                    // body...
+                    pushMsg = msg.message;
+                });
+            }
             advertisement.find({device: deviceId, deleted: false}).populate('advertisementImage').sort({'pricePerClick': 'DESC'}).exec(function(err, results){
                 if (err) {
                     res.status(500);
@@ -120,7 +127,7 @@ module.exports = {
                             row.imageUrl = imageUrl;
                             returnAds.push(row);
                         }
-                        res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                        res.json({ message: pushMsg, advertisements: returnAds}); 
                         return;
                         });
                     });
@@ -147,7 +154,7 @@ module.exports = {
                         row.imageUrl = imageUrl;
                         returnAds.push(row);
                     }
-                    res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                    res.json({ message: pushMsg, advertisements: returnAds}); 
                     return;
                 }
                 

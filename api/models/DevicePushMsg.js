@@ -8,7 +8,7 @@
 module.exports = {
   identity: 'devicePushMsg',
   attributes: {
-  		device: {type: 'array', defaultsTo: []},
+  		device: {type: 'string', defaultsTo: '藏宝街为您发现神祕宝藏，点击免费抽奖，海量奖品等你拿！'},
   		message: {type: 'string', required: true},
   		deleted: {type: 'boolean', defaultsTo: false}
   }

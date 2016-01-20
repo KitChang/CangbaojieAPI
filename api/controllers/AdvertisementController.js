@@ -28,11 +28,11 @@ module.exports = {
             if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
             var pushMsg = "藏宝街为您发现神祕宝藏，点击免费抽奖，海量奖品等你拿！";
             if(deviceId.length==1) {
-                devicePushMsg.findOne({device: deviceId[0]}).exec(function (err, msg) {
+                devicePushMsg.findOne({device: deviceId[0]}).exec(function (err, pushmsg) {
                     // body...
-                    console.log(msg);
-                    if (!msg) {
-                        pushMsg = "藏宝街为您发现神祕宝藏，点击免费抽奖，海量奖品等你拿！";
+                    console.log(pushmsg);
+                    if (pushmsg) {
+                        pushMsg = pushmsg.message;
                     };
                 });
             }

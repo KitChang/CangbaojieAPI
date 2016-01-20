@@ -75,7 +75,8 @@ module.exports = {
                     return;
                 }
                 if(!user){
-                    AppUser.create({openid: openid, username: userInfo.nickname, sex: userInfo.sex, phone: "", phoneVerified: false, authType: "wechat"}).exec(function(err, createdUser){
+                    var sex = userInfo.sex + "";
+                    AppUser.create({openid: openid, username: userInfo.nickname, sex: sex, phone: "", phoneVerified: false, authType: "wechat"}).exec(function(err, createdUser){
                         if(err){
                             res.status(500);
                             res.json({message: "Not authenticated"});

@@ -31,7 +31,7 @@ module.exports = {
                 devicePushMsg.findOne({device: deviceId[0]}).exec(function (err, msg) {
                     // body...
                     console.log(msg);
-                    if (msg.message !== undefined) {
+                    if (!msg) {
                         pushMsg = msg.message;
                     };
                 });

@@ -26,7 +26,7 @@ module.exports = {
                 deviceId = deviceId.split(",");
             }
             if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
-            advertisement.find({device: deviceId, deleted: false}).populate('advertisementImage').exec(function(err, results){
+            advertisement.find({device: deviceId, deleted: false}).populate('advertisementImage').sort({'pricePerClick': 'DESC'}).exec(function(err, results){
                 if (err) {
                     res.status(500);
                     res.end();
@@ -322,6 +322,10 @@ module.exports = {
                         if(appUserId){
                             logger.info("User "+appUserId+" received advertisement "+adId);
                             access.create({appUser: appUserId, device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
+                        });
+                        } else {
+                            logger.info("User 569cfb0a598d660b083bb5d2 received advertisement "+adId);
+                            access.create({appUser: '569cfb0a598d660b083bb5d2', device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
                         });
                         }
                         return;

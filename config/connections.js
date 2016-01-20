@@ -30,10 +30,10 @@ module.exports.connections = {
   ***************************************************************************/
     mongo: {
       module: 'sails-mongo',
-      host: 'ds033915.mongolab.com',
-      port: 33915,
-      user: 'admin',
-      password: 'admin123',
+      host: 'localhost',
+      port: 27107,
+      user: 'cbjdev',
+      password: 'cbjdev2015',
       database: 'cangbaojie_dev'
   },
     mongo_dev: {

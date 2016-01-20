@@ -8,7 +8,7 @@
 module.exports = {
   identity: 'devicePushMsg',
   attributes: {
-  		device: [{type: 'string', required: true}],
+  		device: {type: 'array', defaultsTo: []},
   		message: {type: 'string', required: true},
   		deleted: {type: 'boolean', defaultsTo: false}
   }

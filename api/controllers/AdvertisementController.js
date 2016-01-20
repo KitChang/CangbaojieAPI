@@ -30,7 +30,9 @@ module.exports = {
             if(deviceId.length==1) {
                 devicePushMsg.findOne({device: deviceId[0]}).exec(function (err, msg) {
                     // body...
-                    pushMsg = msg.message;
+                    if (msg.message) {
+                        pushMsg = msg.message;
+                    };
                 });
             }
             advertisement.find({device: deviceId, deleted: false}).populate('advertisementImage').sort({'pricePerClick': 'DESC'}).exec(function(err, results){

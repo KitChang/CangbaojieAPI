@@ -61,7 +61,7 @@ module.exports = {
    ***************************************************************************/
 
     port: process.env.PORT || 3003,
-    ibeaconMacauApiHost: 'localhost',
+    ibeaconMacauApiHost: 'api.ibeacon-macau.com',
     ibeaconMacauApiPort: 3001
 
   /***************************************************************************

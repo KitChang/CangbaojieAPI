@@ -122,8 +122,8 @@ module.exports = {
                         return;
                     };
                     request.post('http://106.ihuyi.cn/webservice/sms.php?method=Submit'
-                        , {form:{'account':'cf_377736392',
-                                'password':'tuQIANQIAN123',
+                        , {form:{'account':'cf_borui',
+                                'password':'xiaoxin',
                                 'mobile':appuser.phone,
                                 'content': '您的验证码是：'+appUserFound.verifyCode+'。请不要把验证码泄露给其他人。'}}
                         , function (err, response, result) {
@@ -301,8 +301,8 @@ module.exports = {
                     return;
                     };
                     request.post('http://106.ihuyi.cn/webservice/sms.php?method=Submit'
-                        , {form:{'account':'cf_377736392',
-                                'password':'tuQIANQIAN123',
+                        , {form:{'account':'cf_borui',
+                                'password':'xiaoxin',
                                 'mobile':appuser.phone,
                                 'content': '您的验证码是：'+appuser.resetVerifyCode+'。请不要把验证码泄露给其他人。'}}
                         , function (err, response, result) {

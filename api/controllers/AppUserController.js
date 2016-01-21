@@ -304,7 +304,7 @@ module.exports = {
                         , {form:{'account':'cf_377736392',
                                 'password':'tuQIANQIAN123',
                                 'mobile':appuser.phone,
-                                'content': '您的验证码是：'+appuser.verifyCode+'。请不要把验证码泄露给其他人。'}}
+                                'content': '您的验证码是：'+appuser.resetVerifyCode+'。请不要把验证码泄露给其他人。'}}
                         , function (err, response, result) {
                         if (err) {
                             res.status(500);

@@ -36,7 +36,7 @@ module.exports = {
                     };
                 });
             }
-            advertisement.find({device: deviceId, deleted: false}).populate('advertisementImage').sort({'pricePerClick': 'DESC'}).exec(function(err, results){
+            advertisement.find({device: deviceId, deleted: false, status: "publish"}).populate('advertisementImage').sort({'pricePerClick': 'DESC'}).exec(function(err, results){
                 if (err) {
                     res.status(500);
                     res.end();

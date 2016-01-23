@@ -275,7 +275,8 @@ module.exports = {
                             var imageVersion = ad.advertisementImage.imageVersion;
                             var publicId = ad.advertisementImage.imagePublicId;
                             var imageFormat = ad.advertisementImage.imageFormat;
-                            imageUrl = "http://res.cloudinary.com/djdts3tqq/image/upload/v" + imageVersion + "/"+publicId + "." + imageFormat;
+                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/" + publicId + "." + imageFormat;
+                            //imageUrl = "http://res.cloudinary.com/djdts3tqq/image/upload/v" + imageVersion + "/"+publicId + "." + imageFormat;
                         }
                         var retAd = {};
                         retAd.imageUrl = imageUrl;

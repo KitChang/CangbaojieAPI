@@ -51,11 +51,11 @@ module.exports.routes = {
       controller: 'AdvertisementController',
       action: 'find'
   },
-  
+  /*
   '/draw/test': {
       controller: 'LuckyDrawController',
       action: 'test'
-  },
+  },*/
  '/prize/coupon': {
      controller: 'PrizeCouponController',
      action: 'coupon'

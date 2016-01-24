@@ -27,12 +27,12 @@ module.exports = {
                     var drawCoupon = results.pop();
                     retDrawCoupon = {};
                     retDrawCoupon.advertisement = drawCoupon.advertisement.id;
-                    var imageUrlm = "";
+                    var imageUrl = "";
                     if(drawCoupon.advertisementImage){
                         var image = drawCoupon.advertisementImage;
                         var publicId = drawCoupon.advertisementImage.imagePublicId;
                         var imageFormat = drawCoupon.advertisementImage.imageFormat;
-                        imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
+                        imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                     }
                     retDrawCoupon.id = drawCoupon.id;
                     retDrawCoupon.imageUrl = imageUrl;

@@ -124,7 +124,7 @@ module.exports = {
                             if(results[i].advertisementImage){
                                 var publicId = results[i].advertisementImage.imagePublicId;
                                 var imageFormat = results[i].advertisementImage.imageFormat;
-                                imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
+                                imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                                 logger.info('User ' + appUserId + " received advertisements through device" + deviceId );
                             }
                             row.imageUrl = imageUrl;
@@ -150,7 +150,7 @@ module.exports = {
                         if(results[i].advertisementImage){
                             var publicId = results[i].advertisementImage.imagePublicId;
                             var imageFormat = results[i].advertisementImage.imageFormat;
-                            imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
+                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                             logger.info('User ' + appUserId + " received advertisements of device" + deviceId );
                         }
                         row.imageUrl = imageUrl;
@@ -279,7 +279,7 @@ module.exports = {
                             if(results[i].advertisementImage){
                                 var publicId = results[i].advertisementImage.imagePublicId;
                                 var imageFormat = results[i].advertisementImage.imageFormat;
-                                imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
+                                imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                                 logger.info('User ' + appUserId + " received advertisements through device" + deviceId );
                             }
                             row.imageUrl = imageUrl;
@@ -302,7 +302,7 @@ module.exports = {
                         if(results[i].advertisementImage){
                             var publicId = results[i].advertisementImage.imagePublicId;
                             var imageFormat = results[i].advertisementImage.imageFormat;
-                            imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
+                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                             logger.info('User ' + appUserId + " received advertisements of device" + deviceId );
                         }
                         row.imageUrl = imageUrl;
@@ -366,7 +366,7 @@ module.exports = {
                         
                         var publicId = results[i].advertisementImage.imagePublicId;
                         var imageFormat = results[i].advertisementImage.imageFormat;
-                        imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
+                        imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                     }
                     row.imageUrl = imageUrl;
                     returnAds.push(row);
@@ -418,7 +418,7 @@ module.exports = {
                         if(ad.advertisementImage){
                             var publicId = ad.advertisementImage.imagePublicId;
                             var imageFormat = ad.advertisementImage.imageFormat;
-                            imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
+                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                         }
                         var retAd = {};
                         retAd.imageUrl = imageUrl;

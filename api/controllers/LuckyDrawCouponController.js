@@ -30,11 +30,9 @@ module.exports = {
                     var imageUrlm = "";
                     if(drawCoupon.advertisementImage){
                         var image = drawCoupon.advertisementImage;
-                        var imageVersion = drawCoupon.advertisementImage.imageVersion;
                         var publicId = drawCoupon.advertisementImage.imagePublicId;
                         var imageFormat = drawCoupon.advertisementImage.imageFormat;
-                            imageUrl = "http://res.cloudinary.com/djdts3tqq/image/upload/v" + imageVersion + "/"+publicId + "." + imageFormat;
-                            
+                        imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
                         }
                     retDrawCoupon.id = drawCoupon.id;
                     retDrawCoupon.imageUrl = imageUrl;

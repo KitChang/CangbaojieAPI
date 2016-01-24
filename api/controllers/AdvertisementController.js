@@ -27,7 +27,17 @@ module.exports = {
                 deviceId = deviceId.split(",");
             }
             if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
-            advertisement.find({device: deviceId, deleted: false}).populate('advertisementImage').exec(function(err, results){
+            var pushMsg = "藏宝街为您发现神祕宝藏，点击免费抽奖，海量奖品等你拿！";
+            if(deviceId.length==1) {
+                devicePushMsg.findOne({device: deviceId[0]}).exec(function (err, pushmsg) {
+                    // body...
+                    console.log(pushmsg);
+                    if (pushmsg) {
+                        pushMsg = pushmsg.message;
+                    };
+                });
+            }
+            advertisement.find({device: deviceId, deleted: false, status: "publish"}).populate('advertisementImage').sort({'pricePerClick': 'DESC'}).exec(function(err, results){
                 if (err) {
                     res.status(500);
                     res.end();
@@ -120,7 +130,7 @@ module.exports = {
                             row.imageUrl = imageUrl;
                             returnAds.push(row);
                         }
-                        res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                        res.json({ message: pushMsg, advertisements: returnAds}); 
                         return;
                         });
                     });
@@ -146,7 +156,7 @@ module.exports = {
                         row.imageUrl = imageUrl;
                         returnAds.push(row);
                     }
-                    res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                    res.json({ message: pushMsg, advertisements: returnAds}); 
                     return;
                 }
                 
@@ -467,6 +477,10 @@ module.exports = {
                         if(appUserId){
                             logger.info("User "+appUserId+" received advertisement "+adId);
                             access.create({appUser: appUserId, device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
+                        });
+                        } else {
+                            logger.info("User 569cfb0a598d660b083bb5d2 received advertisement "+adId);
+                            access.create({appUser: '569cfb0a598d660b083bb5d2', device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
                         });
                         }
                         return;

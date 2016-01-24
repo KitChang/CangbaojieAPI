@@ -67,7 +67,16 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-    
+  /*
+  username: 'cbjdev',
+  password: 'cbjdev2015',
+  adapter: 'mongo',
+  host: 'localhost',
+  port: 27017,
+  db: 'cangbaojie_dev',
+  collection: 'sessions'
+  */  
+  
     
   username: 'admin',
   password: 'admin123',
@@ -75,7 +84,7 @@ module.exports.session = {
   host: 'ds033915.mongolab.com',
   port: 33915,
   db: 'cangbaojie_dev',
-  collection: 'sessions',
+  collection: 'sessions'
 
   /***************************************************************************
   *                                                                          *

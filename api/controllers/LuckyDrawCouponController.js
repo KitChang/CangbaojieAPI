@@ -33,7 +33,7 @@ module.exports = {
                         var publicId = drawCoupon.advertisementImage.imagePublicId;
                         var imageFormat = drawCoupon.advertisementImage.imageFormat;
                         imageUrl = "http://"+req.host+":3004/upload/"+publicId + "." + imageFormat;
-                        }
+                    }
                     retDrawCoupon.id = drawCoupon.id;
                     retDrawCoupon.imageUrl = imageUrl;
                     retDrawCoupon.advertisementTitle = drawCoupon.advertisement.title;

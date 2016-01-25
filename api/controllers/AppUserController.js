@@ -115,7 +115,7 @@ module.exports = {
                 //expire.setTime(expire.getTime() + 60 *1000); //1 * 24 * 60 * 60 * 1000
                 appUserFound.verifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
                 appUserFound.verificationExpiredAt = verificationExpiredAt;
-                appUserFound.save(function (err, appuser) {
+                appUserFound.save(function (err, appUser) {
                     if (err) {
                         res.status(500);
                         res.end();
@@ -124,7 +124,7 @@ module.exports = {
                     request.post('http://106.ihuyi.cn/webservice/sms.php?method=Submit'
                         , {form:{'account':'cf_borui',
                                 'password':'xiaoxin',
-                                'mobile':appuser.phone,
+                                'mobile':appUser.phone,
                                 'content': '您的验证码是：'+appUserFound.verifyCode+'。请不要把验证码泄露给其他人。'}}
                         , function (err, response, result) {
                         if (err) {
@@ -189,7 +189,7 @@ module.exports = {
                     return;
                 }
                 var today = moment();
-                var expiredAt = moment(appuser.verificationExpiredAt);
+                var expiredAt = moment(appUser.verificationExpiredAt);
                 
                 if (!expiredAt.isValid() || today.isAfter(expiredAt)) {
                     res.status(400);
@@ -280,21 +280,21 @@ module.exports = {
             res.json({message: "参数不足"});
             return;
         }
-        AppUser.findOne({phone: phone}).exec(function (err, appuser) {
-            if(appuser==null)
+        AppUser.findOne({phone: phone}).exec(function (err, appUser) {
+            if(appUser==null)
             {
-                console.log("appuser not found");
+                console.log("appUser not found");
                 res.status(400);
                 res.json({message: 'user not found'});
                 return;
             }
             var number = Math.floor(Math.random()*(999999-100000+1)+100000);
-                appuser.resetVerifyCode = number.toString();
+                appUser.resetVerifyCode = number.toString();
                 //var today = new Date('UTC');
                 var expire = moment().utcOffset("+08:00").add(1,'d');
                 //expire.setTime(expire.getTime() + 60 *1000); //1 * 24 * 60 * 60 * 1000
-                appuser.resetVerifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
-                appuser.save(function (err, appuser) {
+                appUser.resetVerifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
+                appUser.save(function (err, appUser) {
                     if (err) {
                         res.status(500);
                         res.end();
@@ -303,8 +303,8 @@ module.exports = {
                     request.post('http://106.ihuyi.cn/webservice/sms.php?method=Submit'
                         , {form:{'account':'cf_borui',
                                 'password':'xiaoxin',
-                                'mobile':appuser.phone,
-                                'content': '您的验证码是：'+appuser.resetVerifyCode+'。请不要把验证码泄露给其他人。'}}
+                                'mobile':appUser.phone,
+                                'content': '您的验证码是：'+appUser.resetVerifyCode+'。请不要把验证码泄露给其他人。'}}
                         , function (err, response, result) {
                         if (err) {
                             res.status(500);
@@ -342,23 +342,23 @@ module.exports = {
             res.json({message: "参数不足"});
             return;
         }
-            AppUser.findOne({phone: phone}).exec(function (err, appuser) {
+            AppUser.findOne({phone: phone}).exec(function (err, appUser) {
                 if(err)
                 {
                     res.status(500);
                     res.end();
                     return;
                 }
-                if(appuser==null)
+                if(appUser==null)
                 {
-                    console.log("appuser not found");
+                    console.log("appUser not found");
                     res.status(400);
                     res.end();
                     return;
                 }
 
                 var today = moment();
-                var expire = moment(appuser.resetVerifyExpire, "YYYY-MM-DD HH:mm:ssZZ");
+                var expire = moment(appUser.resetVerifyExpire, "YYYY-MM-DD HH:mm:ssZZ");
                 console.log(today);
                 console.log(expire);
                 if (!expire.isValid() || today.isAfter(expire)) {
@@ -367,11 +367,11 @@ module.exports = {
                     res.json({message: 'please regist first'});
                     return;
                 }
-                if (appuser.resetVerifyCode == code) {
-                    appuser.password = newPassword;
-                    appuser.resetVerifyCode = null;
-                    appuser.resetVerifyExpire = null;
-                    appuser.save(function (err, appuser) {
+                if (appUser.resetVerifyCode == code) {
+                    appUser.password = newPassword;
+                    appUser.resetVerifyCode = null;
+                    appUser.resetVerifyExpire = null;
+                    appUser.save(function (err, appUser) {
                         if (err) {
                             console.log('service down');
                             res.status(500);

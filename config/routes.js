@@ -49,7 +49,7 @@ module.exports.routes = {
   },
   '/advertisements': {
       controller: 'AdvertisementController',
-      action: 'find'
+      action: 'find4'
   },
   /*
   '/draw/test': {

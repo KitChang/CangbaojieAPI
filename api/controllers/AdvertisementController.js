@@ -9,8 +9,9 @@ var auth = require('../lib/auth');
 var logger = sails.config.log4js.getLogger('cangbaojie');
 var moment = require('moment');
 var Device = require('../lib/device');
+var sync = require('synchronize');
 module.exports = {
-    find: function(req, res){
+    find4: function(req, res){
         var deviceId = req.param('device');
         var sessionId = req.param('session');
         if(!sessionId){
@@ -121,11 +122,9 @@ module.exports = {
                             }
                             var imageUrl = "";
                             if(results[i].advertisementImage){
-                                var imageVersion = results[i].advertisementImage.imageVersion;
                                 var publicId = results[i].advertisementImage.imagePublicId;
                                 var imageFormat = results[i].advertisementImage.imageFormat;
-                                //imageUrl = "http://res.cloudinary.com/djdts3tqq/image/upload/v" + imageVersion + "/"+publicId + "." + imageFormat;
-                                imageUrl = "http://api.ibeacon-macau.com:3004/upload/" + publicId + "." + imageFormat;
+                                imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                                 logger.info('User ' + appUserId + " received advertisements through device" + deviceId );
                             }
                             row.imageUrl = imageUrl;
@@ -149,11 +148,9 @@ module.exports = {
                         }
                         var imageUrl = "";
                         if(results[i].advertisementImage){
-                            var imageVersion = results[i].advertisementImage.imageVersion;
                             var publicId = results[i].advertisementImage.imagePublicId;
                             var imageFormat = results[i].advertisementImage.imageFormat;
-                            //imageUrl = "http://res.cloudinary.com/djdts3tqq/image/upload/v" + imageVersion + "/"+publicId + "." + imageFormat;
-                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/" + publicId + "." + imageFormat;
+                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                             logger.info('User ' + appUserId + " received advertisements of device" + deviceId );
                         }
                         row.imageUrl = imageUrl;
@@ -171,6 +168,153 @@ module.exports = {
             
 
 
+    },
+    find: function(req, res){
+        var deviceId = req.param('device');
+        var sessionId = req.param('session');
+        if(!sessionId){
+            sessionId = "-1";
+        }
+        if(!deviceId){
+            res.status(400); //not found
+            res.end();
+            return;
+        }
+        auth.getUserId(sessionId, function(err, appUserId){
+            if(deviceId.indexOf(",")!=-1){
+                deviceId = deviceId.split(",");
+            }
+            if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
+            var adDevice = {};
+            device.find({id: deviceId}).exec(function(err, devicesWithAd){
+                var adIdArr, deviceWithAd;
+                while(devicesWithAd.length){
+                    deviceWithAd = devicesWithAd.pop();
+                    adIdArr = deviceWithAd.advertisement;
+                    while(adIdArr.length){
+                        adDevice[adIdArr.pop()] = deviceWithAd.id;
+                    }
+                }
+                adIdToFind = Object.keys(adDevice);
+                advertisement.find({id: adIdToFind, deleted: false, status: "publish"}).populate('advertisementImage').exec(function(err, results){
+                if (err) {
+                    res.status(500);
+                    res.end();
+                    return;
+                }
+                if(!results){
+                    res.status(400);
+                    res.json({message: "Advertisements not found"});
+                    res.end();
+                    return;
+                }
+                var advertisementIdArr = [];
+                for (var i = 0; i<results.length; i++) {
+                    advertisementIdArr.push(results[i].id);
+                }
+                if(appUserId){
+                    LuckyDrawCoupon.find({advertisement:advertisementIdArr, appUser: appUserId}).populate('advertisement').exec(function(err, lDCoupons){
+                    if(err){
+                        res.status(500);
+                        res.end();
+                        return;
+                    }   
+                    var lDCouponAdArr = []; var ldCouponIdsArr = [];
+                    for(var i = 0; i < lDCoupons.length; i++){
+                        lDCouponAdArr.push(lDCoupons[i].advertisement.id);
+                    }
+                    var luckyDrawCouponArr = [];
+                    var luckyDrawCouponObj = {};
+                    var lDCouponToRemove = [];
+                    for (var i = 0; i<results.length; i++) {
+                        for(var j=0; j<lDCoupons.length; j++){
+                            if(results[i].id == lDCoupons[j].advertisement.id)
+                                lDCouponToRemove.push(lDCoupons[j].id);
+                        }
+                    }
+                    for (var i = 0; i<results.length; i++) {
+                        luckyDrawCouponObj = {};
+                        for (var j=0; j<deviceId.length; j++) {
+                            if (results[i].device.indexOf(deviceId[j]) != -1) {
+                                luckyDrawCouponObj.throughDevice = deviceId[j];
+                            }
+                        }
+                        luckyDrawCouponObj.advertisement = results[i].id;
+                        luckyDrawCouponObj.appUser = appUserId;
+                        if(results[i].advertisementImage)
+                            luckyDrawCouponObj.advertisementImage = results[i].advertisementImage.id;
+                        else{
+                            res.status(500);
+                            res.end();
+                            logger.info('Advertisement ' + results[i].id + " has no image");
+                            return;
+                        }
+                        var drawCouponExpiredTime = results[i].drawCouponExpiredTime;
+                        var date = moment().add(drawCouponExpiredTime, "seconds").toDate();
+                        luckyDrawCouponObj.drawCouponExpiredAt = date;
+                        luckyDrawCouponArr.push(luckyDrawCouponObj);
+                    }
+                        console.log(lDCouponToRemove+lDCouponToRemove.length);
+                    if(lDCouponToRemove.length==0)
+                        lDCouponToRemove = ["-1"];
+                    LuckyDrawCoupon.destroy({id:lDCouponToRemove }).exec(function(err){
+                        if(err){
+                            res.status(500);
+                            res.end();
+                            return;
+                        }
+                        LuckyDrawCoupon.create(luckyDrawCouponArr).exec(function(err){
+                        if(err){
+                            res.status(500);
+                            res.end();
+                            return;
+                        }
+                        var returnAds = [];
+                        for (var i = 0; i<results.length; i++) {
+                            var row = {};
+                            row.title = results[i].title;
+                            row.id = results[i].id;
+                            row.throughDevice = adDevice[row.id];
+                            var imageUrl = "";
+                            if(results[i].advertisementImage){
+                                var publicId = results[i].advertisementImage.imagePublicId;
+                                var imageFormat = results[i].advertisementImage.imageFormat;
+                                imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                                logger.info('User ' + appUserId + " received advertisements through device" + deviceId );
+                            }
+                            row.imageUrl = imageUrl;
+                            returnAds.push(row);
+                        }
+                        res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                        return;
+                        });
+                    });
+                }); 
+                }else{
+                    var returnAds = [];
+                    for (var i = 0; i<results.length; i++) {
+                        var row = {};
+                        row.title = results[i].title;
+                        row.id = results[i].id;
+                        row.throughDevice = adDevice[row.id];
+
+                        var imageUrl = "";
+                        if(results[i].advertisementImage){
+                            var publicId = results[i].advertisementImage.imagePublicId;
+                            var imageFormat = results[i].advertisementImage.imageFormat;
+                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                            logger.info('User ' + appUserId + " received advertisements of device" + deviceId );
+                        }
+                        row.imageUrl = imageUrl;
+                        returnAds.push(row);
+                    }
+                    res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                    return;
+                }
+                
+                })
+            });
+        });
     },
 	find2: function(req, res){
         
@@ -219,11 +363,10 @@ module.exports = {
                     row.title = results[i].title;
                     var imageUrl = "";
                     if(results[i].advertisementImage){
-                        var imageVersion = results[i].advertisementImage.imageVersion;
+                        
                         var publicId = results[i].advertisementImage.imagePublicId;
                         var imageFormat = results[i].advertisementImage.imageFormat;
-                        imageUrl = "http://api.ibeacon-macau.com:3004/upload/" + publicId + "." + imageFormat;
-                        //imageUrl = "http://res.cloudinary.com/djdts3tqq/image/upload/v" + imageVersion + "/"+publicId + "." + imageFormat;
+                        imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                     }
                     row.imageUrl = imageUrl;
                     returnAds.push(row);
@@ -260,7 +403,7 @@ module.exports = {
                     res.end();
                     return;
                 }
-                advertisement.findOne({id: adId, device: deviceId}).populate('advertisementImage').populate('client').exec(function(err, ad){
+                advertisement.findOne({id: adId, device: deviceId, status: "publish"}).populate('advertisementImage').populate('client').exec(function(err, ad){
                         if(err){
                             res.status(500);
                             res.end();
@@ -273,11 +416,9 @@ module.exports = {
                         }
                         var imageUrl = "";
                         if(ad.advertisementImage){
-                            var imageVersion = ad.advertisementImage.imageVersion;
                             var publicId = ad.advertisementImage.imagePublicId;
                             var imageFormat = ad.advertisementImage.imageFormat;
-                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/" + publicId + "." + imageFormat;
-                            //imageUrl = "http://res.cloudinary.com/djdts3tqq/image/upload/v" + imageVersion + "/"+publicId + "." + imageFormat;
+                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                         }
                         var retAd = {};
                         retAd.imageUrl = imageUrl;

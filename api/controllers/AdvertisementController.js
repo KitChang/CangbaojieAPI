@@ -9,7 +9,6 @@ var auth = require('../lib/auth');
 var logger = sails.config.log4js.getLogger('cangbaojie');
 var moment = require('moment');
 var Device = require('../lib/device');
-var sync = require('synchronize');
 module.exports = {
     find4: function(req, res){
         var deviceId = req.param('device');

@@ -31,7 +31,6 @@
     "moment": "2.10.6",
     "log4js": "*",
     "xml2js": "0.4.15",
-    "synchronize": "0.9.14"
   },
   "scripts": {
     "debug": "node debug app.js",

@@ -419,8 +419,16 @@ module.exports = {
                             var imageFormat = ad.advertisementImage.imageFormat;
                             imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
                         }
+                        var shareImageUrl = "";
+                        if(ad.shareImage){
+                            var publicId = ad.shareImage.imagePublicId;
+                            var imageFormat = ad.shareImage.imageFormat;
+                            shareImageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                        }
+
                         var retAd = {};
                         retAd.imageUrl = imageUrl;
+                        retAd.shareImageUrl = shareImageUrl;
                         retAd.title = ad.title;
                         retAd.description = ad.description;
                         retAd.category = ad.category;
@@ -437,6 +445,9 @@ module.exports = {
                         retAd.drawPerformInterval = ad.drawPerformInterval;
                         retAd.indexUrl = ad.indexUrl;
                         retAd.mobilePhone = ad.client.mobilePhone;
+                        retAd.shareTitle = ad.shareTitle;
+                        retAd.shareContent = ad.shareContent;
+                        retAd.shareLink = ad.shareLink;
                         res.json(retAd); 
                         res.end();
                         now = moment().toDate();

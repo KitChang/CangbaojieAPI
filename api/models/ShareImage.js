@@ -11,5 +11,7 @@ module.exports = {
   attributes: {
       replaced: {type: 'boolean', defaultsTo: false},
       advertisement: {model: 'advertisement'}
-  }};
+  }
+}
+
 

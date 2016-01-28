@@ -228,6 +228,9 @@ module.exports = {
           type: 'string',
           enum: ['draft', 'publish', 'disabled'],
           defaultsTo: 'draft'
+      },
+      shareImage: {
+          model: 'ShareImage'
       }
       
   }

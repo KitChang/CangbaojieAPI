@@ -9,6 +9,7 @@ var auth = require('../lib/auth');
 var logger = sails.config.log4js.getLogger('cangbaojie');
 var moment = require('moment');
 var Device = require('../lib/device');
+var baseUrl = "http://api.ibeacon-macau.com:3004/upload/";
 module.exports = {
     find4: function(req, res){
         var deviceId = req.param('device');
@@ -123,7 +124,7 @@ module.exports = {
                             if(results[i].advertisementImage){
                                 var publicId = results[i].advertisementImage.imagePublicId;
                                 var imageFormat = results[i].advertisementImage.imageFormat;
-                                imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                                imageUrl = baseUrl+publicId + "." + imageFormat;
                                 logger.info('User ' + appUserId + " received advertisements through device" + deviceId );
                             }
                             row.imageUrl = imageUrl;
@@ -149,7 +150,7 @@ module.exports = {
                         if(results[i].advertisementImage){
                             var publicId = results[i].advertisementImage.imagePublicId;
                             var imageFormat = results[i].advertisementImage.imageFormat;
-                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                            imageUrl = baseUrl+publicId + "." + imageFormat;
                             logger.info('User ' + appUserId + " received advertisements of device" + deviceId );
                         }
                         row.imageUrl = imageUrl;
@@ -278,7 +279,7 @@ module.exports = {
                             if(results[i].advertisementImage){
                                 var publicId = results[i].advertisementImage.imagePublicId;
                                 var imageFormat = results[i].advertisementImage.imageFormat;
-                                imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                                imageUrl = baseUrl+publicId + "." + imageFormat;
                                 logger.info('User ' + appUserId + " received advertisements through device" + deviceId );
                             }
                             row.imageUrl = imageUrl;
@@ -301,7 +302,7 @@ module.exports = {
                         if(results[i].advertisementImage){
                             var publicId = results[i].advertisementImage.imagePublicId;
                             var imageFormat = results[i].advertisementImage.imageFormat;
-                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                            imageUrl = baseUrl+publicId + "." + imageFormat;
                             logger.info('User ' + appUserId + " received advertisements of device" + deviceId );
                         }
                         row.imageUrl = imageUrl;
@@ -365,7 +366,7 @@ module.exports = {
                         
                         var publicId = results[i].advertisementImage.imagePublicId;
                         var imageFormat = results[i].advertisementImage.imageFormat;
-                        imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                        imageUrl = baseUrl+publicId + "." + imageFormat;
                     }
                     row.imageUrl = imageUrl;
                     returnAds.push(row);
@@ -417,13 +418,13 @@ module.exports = {
                         if(ad.advertisementImage){
                             var publicId = ad.advertisementImage.imagePublicId;
                             var imageFormat = ad.advertisementImage.imageFormat;
-                            imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                            imageUrl = baseUrl+publicId + "." + imageFormat;
                         }
                         var shareImageUrl = "";
                         if(ad.shareImage){
                             var publicId = ad.shareImage.imagePublicId;
                             var imageFormat = ad.shareImage.imageFormat;
-                            shareImageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                            shareImageUrl = baseUrl+publicId + "." + imageFormat;
                         }
 
                         var retAd = {};

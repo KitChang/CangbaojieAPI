@@ -6,6 +6,7 @@
  */
 var auth = require("../lib/auth");
 var moment = require("moment");
+var baseUrl = "http://api.ibeacon-macau.com:3004/upload/";
 module.exports = {
 	find: function(req, res){
         var sessionId = req.param("session");
@@ -32,7 +33,7 @@ module.exports = {
                         var image = drawCoupon.advertisementImage;
                         var publicId = drawCoupon.advertisementImage.imagePublicId;
                         var imageFormat = drawCoupon.advertisementImage.imageFormat;
-                        imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
+                        imageUrl = baseUrl+publicId + "." + imageFormat;
                     }
                     retDrawCoupon.id = drawCoupon.id;
                     retDrawCoupon.imageUrl = imageUrl;

@@ -402,7 +402,7 @@ module.exports = {
                     res.end();
                     return;
                 }
-                advertisement.findOne({id: adId, device: deviceId, status: "publish"}).populate('advertisementImage').populate('client').populate('shareImage').exec(function(err, ad){
+                advertisement.findOne({id: adId, device: deviceId, status: "publish"}).populate('advertisementImage').populate('client').populate('ShareImage').exec(function(err, ad){
                         if(err){
                             res.status(500);
                             res.end();

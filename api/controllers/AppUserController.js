@@ -31,7 +31,7 @@ module.exports = {
         if(username.length < 2){
             usernameErr = "用户名长度至少2位";
         }
-        if(sex!="1"&&sex!="2"){
+        if(sex!="1"&&sex!="2"&&sex!="0"){
             sexErr = "性别格式错误";
         }
         if(phoneErr){
@@ -64,8 +64,13 @@ module.exports = {
                 return;
             }
             AppUser.create({phone: phone, password: password, username: username, phoneVerified: false, authType: "local", sex: sex}).exec(function(err, createdUser){
-            res.status(200);
-            res.json({message: "Registered"});
+                if(err){
+                    res.status(500);
+                    res.json({message: "Not registered"});
+                    return;
+                }
+                res.status(200);
+                res.json({message: "Registered"});
         });
         });
         
@@ -96,6 +101,11 @@ module.exports = {
                 return;
             }
             AppUser.findOne({id: appUserId}).exec(function (err, appUserFound) {
+                if(err){
+                    res.status(500);
+                    res.json({message: "Not registered"});
+                    return;
+                }
                 if(!appUserFound)
                 {
                     res.status(400);
@@ -281,11 +291,14 @@ module.exports = {
             return;
         }
         AppUser.findOne({phone: phone}).exec(function (err, appUser) {
+            if(err){
+                res.status(500);
+                return;
+            }
             if(appUser==null)
             {
-                console.log("appUser not found");
                 res.status(400);
-                res.json({message: 'user not found'});
+                res.json({message: 'User not found'});
                 return;
             }
             var number = Math.floor(Math.random()*(999999-100000+1)+100000);

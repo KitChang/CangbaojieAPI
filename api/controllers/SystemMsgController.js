@@ -68,10 +68,8 @@
         SystemMsg.create({title: title, content: content
         	, createAt: createAt, expireAt: expireAt}).exec(
         	function (err, systemMsg) {
-        		if(err)
-                {
-                    res.status(401);
-                    res.end();
+        		if(err){
+                    res.status(500);
                     return;
                 }
                 res.status(201);

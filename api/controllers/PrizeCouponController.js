@@ -9,6 +9,10 @@ module.exports = {
 	coupon: function(req, res){
         var sessionId = req.param('session');
         auth.getUserId(sessionId, function(err, appUserId){
+            if(err){
+                    res.status(500);
+                    return;
+            }
             if(!appUserId){
                 res.status(401);
                 res.json({message: "Not authenticated"});
@@ -65,6 +69,10 @@ module.exports = {
         var highCode = req.param('highCode');
         var lowCode = req.param('lowCode');
         auth.getUserId(sessionId, function(err, appUserId){
+            if(err){
+                    res.status(500);
+                    return;
+            }
             if(!appUserId){
                 res.status(401);
                 res.json({message: "Not authenticated"});

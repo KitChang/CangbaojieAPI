@@ -186,6 +186,11 @@ module.exports = {
             if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
             var adDevice = {};
             device.find({id: deviceId}).exec(function(err, devicesWithAd){
+                if(err){
+                    res.status(400); //not found
+                    res.end();
+                    return;
+                }
                 var adIdArr, deviceWithAd;
                 while(devicesWithAd.length){
                     deviceWithAd = devicesWithAd.pop();
@@ -253,7 +258,7 @@ module.exports = {
                         luckyDrawCouponObj.drawCouponExpiredAt = date;
                         luckyDrawCouponArr.push(luckyDrawCouponObj);
                     }
-                        console.log(lDCouponToRemove+lDCouponToRemove.length);
+                        
                     if(lDCouponToRemove.length==0)
                         lDCouponToRemove = ["-1"];
                     LuckyDrawCoupon.destroy({id:lDCouponToRemove }).exec(function(err){
@@ -315,70 +320,7 @@ module.exports = {
             });
         });
     },
-	find2: function(req, res){
-        
-        var uuid = req.param('uuid');
-        var major = req.param('major');
-        var minor = req.param('minor');
-        
-        Device.getId({uuid: uuid, major: major, minor: minor}, function(err, deviceId){
-            
-            if(err){
-                res.status(500);
-                res.end();
-                return;
-            }
-            
-            if(deviceId==null){
-                res.status(404); //not found
-                res.json({message: "Device not found"});
-                res.end();
-                return;
-            }
-            
-            advertisement.find({device: deviceId}).populate('advertisementImage').exec(function(err, results){
-                
-                if (err) {
-                    res.status(500);
-                    res.end();
-                    return;
-                }
-                if(results == null){
-                    res.status(404);
-                    res.json({message: "Advertisements not found"});
-                    res.end();
-                    return;
-                }
-                if(results.length==0){
-                    console.log("l=0");
-                    res.status(404);
-                    res.json({message: "Advertisements not found"});
-                    res.end();
-                    return;
-                }
-                var returnAds = [];
-                for (var i = 0; i<results.length; i++) {
-                    var row = {};
-                    row.title = results[i].title;
-                    var imageUrl = "";
-                    if(results[i].advertisementImage){
-                        
-                        var publicId = results[i].advertisementImage.imagePublicId;
-                        var imageFormat = results[i].advertisementImage.imageFormat;
-                        imageUrl = "http://api.ibeacon-macau.com:3004/upload/"+publicId + "." + imageFormat;
-                    }
-                    row.imageUrl = imageUrl;
-                    returnAds.push(row);
-                }
-                res.json({ message: "Advertisements returned", advertisements: returnAds}); 
-                logger.info('User ' + appUserId + " access advertisements of device" + deviceId );
-                return;
-            })
-            
-        });
-
-    },
-    findOne: function(req, res){
+	findOne: function(req, res){
         var adId = req.param("advertisement");
         var deviceId = req.param("device");
         var sessionId = req.param("session");
@@ -489,7 +431,6 @@ module.exports = {
                             access.create({appUser: appUserId, device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
                         });
                         } else {
-                            logger.info("User 569cfb0a598d660b083bb5d2 received advertisement "+adId);
                             access.create({appUser: '569cfb0a598d660b083bb5d2', device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
                         });
                         }
@@ -498,15 +439,8 @@ module.exports = {
 
             });
         });
-    },
-    prizeLeft: function(req, res){
-        advertisement.update({}, {firstPrizeQuantityRemain: 5, secondPrizeQuantityRemain: 5, thirdPrizeQuantityRemain: 5, fourthPrizeQuantityRemain: 5, fifthPrizeQuantityRemain: 5, accessCount: 0}).exec(function(err, ads){
-            client.update({}, {account: 0}).exec(function(err){
-                res.end();
-            });
-            
-        });
     }
+    
     
                 
            

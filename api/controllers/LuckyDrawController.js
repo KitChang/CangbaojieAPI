@@ -44,6 +44,10 @@ module.exports = {
                 return;
             }
             Device.findOne(deviceId, function(err, dev){
+                if(err){
+                    res.status(500);
+                    return;
+                }
                 if(!dev){
                     res.status(400);
                     res.json({message: "Device not found"});
@@ -51,6 +55,10 @@ module.exports = {
                     return;
                 }
                 advertisement.findOne({id: advertisementId}).populate('probabilityDraw').exec(function(err, ad){
+                    if(err){
+                        res.status(500);
+                        return;
+                    }
                     if(!ad){
                         res.status(400);
                         res.json({message: "Advertisement not found"});
@@ -69,6 +77,10 @@ module.exports = {
                     }
                     var today = moment().toDate();
                     AppUserDrawInterval.find({appUser: appUserId, advertisement: advertisementId,redrawAt: {'>': today} }).exec(function(err, appUserDrawInterval){
+                        if(err){
+                            res.status(500);
+                            return;
+                        }
                         if(appUserDrawInterval.length){
                             res.status(403);
                             res.json({message: "Draw within interval"});
@@ -78,7 +90,10 @@ module.exports = {
                             var drawPerformInterval = ad.drawPerformInterval;
                             drawPerformInterval = moment().add(drawPerformInterval, "seconds").toDate();
                             AppUserDrawInterval.create({appUser: appUserId, advertisement: advertisementId, redrawAt: drawPerformInterval}).exec(function(err){
-                                
+                                if(err){
+                                    res.status(500);
+                                    return;
+                                }
                                 var firstPrizeProbability = ad.probabilityDraw.firstPrizeProbability;
                                 var secondPrizeProbability = ad.probabilityDraw.secondPrizeProbability;
                                 var thirdPrizeProbability = ad.probabilityDraw.thirdPrizeProbability;
@@ -183,6 +198,10 @@ module.exports = {
         var deviceId = req.param('device');
         var luckyDrawCoupon = req.param('coupon');
         auth.getUserId(sessionId, function(err, appUserId){
+            if(err){
+                    res.status(500);
+                    return;
+            }
             if(!appUserId){
                 res.status(401);
                 res.json({message: "Not authenticated"});
@@ -190,6 +209,10 @@ module.exports = {
                 return;
             }
             Device.findOne(deviceId, function(err, dev){
+                if(err){
+                    res.status(500);
+                    return;
+                }
                 if(!dev){
                     res.status(400);
                     res.json({message: "Device not found"});
@@ -197,6 +220,10 @@ module.exports = {
                     return;
                 }
                 advertisement.findOne({id: advertisementId}).exec(function(err, ad){
+                    if(err){
+                        res.status(500);
+                        return;
+                    }
                     if(!ad){
                         res.status(400);
                         res.json({message: "Advertisement not found"});
@@ -205,6 +232,10 @@ module.exports = {
                     }
                     var today = moment().toDate();
                     AppUserDrawInterval.findOne({appUser: appUserId, advertisement: advertisementId, redrawAt: {'>': today}}).exec(function(err, appUserDrawInterval){
+                        if(err){
+                            res.status(500);
+                            return;
+                        }
                         if(appUserDrawInterval){
                             res.status(403);
                             res.json({message: "Draw within interval"});
@@ -213,9 +244,11 @@ module.exports = {
                         }else{
                             var drawPerformInterval = ad.drawPerformInterval;
                             drawPerformInterval = moment().add(drawPerformInterval, "seconds").toDate();
-                            console.log("dsdsfdsfdsf:"+ad.drawPerformInterval);
                             AppUserDrawInterval.create({appUser: appUserId, advertisement: advertisementId, redrawAt: drawPerformInterval}).exec(function(){
-                    
+                            if(err){
+                                res.status(500);
+                                return;
+                            }
                             if(ad.drawType!="order"){
                                 res.status(400);
                                 res.end();
@@ -344,7 +377,6 @@ module.exports = {
                                                         res.end();
                                                         return;
                                                     }
-                                                    console.log("1: "+sails.config.prize.f+" 2: "+sails.config.prize.s+" 3: "+sails.config.prize.t+ " 4: "+sails.config.prize.fo+" 5: "+sails.config.prize.fi+" attempt: "+sails.config.prize.attempt);
                                                     res.status(201);
                                                     res.json({message: "Won", prize: winPrize}); 
                                                     res.end();

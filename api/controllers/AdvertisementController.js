@@ -159,15 +159,8 @@ module.exports = {
                     res.json({ message: pushMsg, advertisements: returnAds}); 
                     return;
                 }
-                
             })
-            
         });
-        
-        
-            
-
-
     },
     find: function(req, res){
         var deviceId = req.param('device');
@@ -213,12 +206,9 @@ module.exports = {
                     res.end();
                     return;
                 }
-                var advertisementIdArr = [];
-                for (var i = 0; i<results.length; i++) {
-                    advertisementIdArr.push(results[i].id);
-                }
+                
                 if(appUserId){
-                    LuckyDrawCoupon.find({advertisement:advertisementIdArr, appUser: appUserId}).populate('advertisement').exec(function(err, lDCoupons){
+                    LuckyDrawCoupon.find({advertisement:addIdToFind, appUser: appUserId}).populate('advertisement').exec(function(err, lDCoupons){
                     if(err){
                         res.status(500);
                         res.end();
@@ -231,9 +221,9 @@ module.exports = {
                     var luckyDrawCouponArr = [];
                     var luckyDrawCouponObj = {};
                     var lDCouponToRemove = [];
-                    for (var i = 0; i<results.length; i++) {
+                    for (var i = 0; i<addIdToFind.length; i++) {
                         for(var j=0; j<lDCoupons.length; j++){
-                            if(results[i].id == lDCoupons[j].advertisement.id)
+                            if(addIdToFind[i] == lDCoupons[j].advertisement.id)
                                 lDCouponToRemove.push(lDCoupons[j].id);
                         }
                     }
@@ -321,8 +311,6 @@ module.exports = {
             });
         });
     },
-
-	
     findOne: function(req, res){
 
         var adId = req.param("advertisement");

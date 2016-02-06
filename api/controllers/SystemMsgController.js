@@ -29,7 +29,7 @@
                 }
                 console.log(appuser.seenMsg);
                 var todayDate = moment().toDate();
-                SystemMsg.find({deleted: false, expiredAt: {">": todayDate}}).sort({createAt: -1}).exec(function (err, systemMsgs) {
+                SystemMsg.find({deleted: false, expiredAt: {">": todayDate}, effectiveAt: {"<": todayDate}}).sort({createAt: -1}).exec(function (err, systemMsgs) {
                 	if (err) {
                 		res.status(500);
                 		res.end();

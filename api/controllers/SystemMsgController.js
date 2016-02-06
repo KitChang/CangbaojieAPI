@@ -5,6 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
  var auth = require('../lib/auth');
+ var moment = require('moment');
  module.exports = {
  	getMsg: function (req, res) {
  		var session = req.param('session');
@@ -27,7 +28,8 @@
                     return;
                 }
                 console.log(appuser.seenMsg);
-                SystemMsg.find({deleted: false}).sort({createAt: -1}).exec(function (err, systemMsgs) {
+                var todayDate = moment().toDate();
+                SystemMsg.find({deleted: false, expiredAt: {">": todayDate}}).sort({createAt: -1}).exec(function (err, systemMsgs) {
                 	if (err) {
                 		res.status(500);
                 		res.end();

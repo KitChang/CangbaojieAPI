@@ -27,7 +27,7 @@
                     return;
                 }
                 console.log(appuser.seenMsg);
-                SystemMsg.find({}).sort({createAt: -1}).exec(function (err, systemMsgs) {
+                SystemMsg.find({deleted: false}).sort({createAt: -1}).exec(function (err, systemMsgs) {
                 	if (err) {
                 		res.status(500);
                 		res.end();

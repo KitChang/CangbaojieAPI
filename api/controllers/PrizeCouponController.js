@@ -56,7 +56,9 @@ module.exports = {
                     retCoupon.picked = coupon.picked;
                     retCoupon.createdAt = coupon.createdAt;
                     retCoupon.throughDevice = coupon.throughDevice;
+                    retCoupon.prizeAd = coupon.advertisement.title;
                     retCoupons.push(retCoupon);
+                    
                 }
                 res.status(200);
                 res.json({message: "OK", coupons: retCoupons});

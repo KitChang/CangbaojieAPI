@@ -15,7 +15,7 @@ module.exports = {
       },
       sex: {
           type: 'string',
-          enum: ['1', '2'],
+          enum: ['1', '2', '0'],
           required: true
       },
       username: {

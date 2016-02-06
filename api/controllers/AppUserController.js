@@ -46,7 +46,6 @@ module.exports = {
         if(sexErr){
             errObj.sex = sexErr;
         }
-        
         if(phoneErr || passwordErr || usernameErr || sexErr){
             res.status(400);
             res.json({message: "Validation error", errMessage: errObj});
@@ -119,10 +118,8 @@ module.exports = {
                 }
                 var number = Math.floor(Math.random()*(999999-100000+1)+100000);
                 appUserFound.verifyCode = number.toString();
-                //var today = new Date('UTC');
                 var expire = moment().utcOffset("+08:00").add(1,'d');
                 var verificationExpiredAt = moment().add(1, "day").toDate();
-                //expire.setTime(expire.getTime() + 60 *1000); //1 * 24 * 60 * 60 * 1000
                 appUserFound.verifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
                 appUserFound.verificationExpiredAt = verificationExpiredAt;
                 appUserFound.save(function (err, appUser) {
@@ -303,15 +300,13 @@ module.exports = {
             }
             var number = Math.floor(Math.random()*(999999-100000+1)+100000);
                 appUser.resetVerifyCode = number.toString();
-                //var today = new Date('UTC');
                 var expire = moment().utcOffset("+08:00").add(1,'d');
-                //expire.setTime(expire.getTime() + 60 *1000); //1 * 24 * 60 * 60 * 1000
                 appUser.resetVerifyExpire = expire.format("YYYY-MM-DD HH:mm:ssZZ")
                 appUser.save(function (err, appUser) {
                     if (err) {
                         res.status(500);
                         res.end();
-                    return;
+                        return;
                     };
                     request.post('http://106.ihuyi.cn/webservice/sms.php?method=Submit'
                         , {form:{'account':'cf_borui',
@@ -328,7 +323,7 @@ module.exports = {
                             if (err) {
                                 res.status(500);
                                 res.json({message: 'Cant receive SMS'});
-                            return;
+                                return;
                             };
                             if (object.SubmitResult.code[0] != "2") {
                                 res.status(500);
@@ -345,7 +340,8 @@ module.exports = {
 
         });
     }
-    ,resetVerify: function (req, res) {
+    ,
+    resetVerify: function (req, res) {
         var phone = req.param('phone');
         var newPassword = req.param('newpassword');
         var code = req.param('code');
@@ -369,13 +365,9 @@ module.exports = {
                     res.end();
                     return;
                 }
-
                 var today = moment();
                 var expire = moment(appUser.resetVerifyExpire, "YYYY-MM-DD HH:mm:ssZZ");
-                console.log(today);
-                console.log(expire);
                 if (!expire.isValid() || today.isAfter(expire)) {
-                    console.log(today.isAfter(expire));
                     res.status(400);
                     res.json({message: 'please regist first'});
                     return;
@@ -391,14 +383,11 @@ module.exports = {
                             res.json({message: 'service down'});
                             return;
                         };
-                        console.log('verify success');
                         res.status(200);
                         res.json({message: 'verify success'});
-
                     });
                 }
                 else {
-                    console.log("wrong verifyCode");
                     res.status(400);
                     res.json({message: 'wrong code'});
                     return;
@@ -406,7 +395,6 @@ module.exports = {
             });
         
     }
-    //Kit end
     
 };
 

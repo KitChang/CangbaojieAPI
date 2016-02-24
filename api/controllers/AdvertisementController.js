@@ -208,7 +208,7 @@ module.exports = {
                 }
                 var adIdTofind2 = [];
                 for(var i=0; i<results.length; i++){
-                    if(results[i].client.account > 50)
+                    if(results[i].client.account > -50)
                         adIdToFind2.push(results[i].id);
                 }
                 adIdToFind = adIdToFind2;

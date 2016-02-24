@@ -194,7 +194,7 @@ module.exports = {
                     }
                 }
                 adIdToFind = Object.keys(adDevice);
-                advertisement.find({id: adIdToFind, deleted: false, status: "publish"}).populate('advertisementImage').exec(function(err, results){
+                advertisement.find({id: adIdToFind, deleted: false, status: "publish"}).populate('advertisementImage').populate('client').exec(function(err, results){
                 if (err) {
                     res.status(500);
                     res.end();
@@ -206,7 +206,12 @@ module.exports = {
                     res.end();
                     return;
                 }
-                
+                var adIdTofind2 = [];
+                for(var i=0; i<results.length; i++){
+                    if(results[i].client.account > 50)
+                        adIdToFind2.push(results[i].id);
+                }
+                adIdToFind = adIdToFind2;
                 if(appUserId){
                     LuckyDrawCoupon.find({advertisement:addIdToFind, appUser: appUserId}).populate('advertisement').exec(function(err, lDCoupons){
                     if(err){
@@ -266,6 +271,8 @@ module.exports = {
                         }
                         var returnAds = [];
                         for (var i = 0; i<results.length; i++) {
+                            if(results.client.account < -50)
+                                continue;
                             var row = {};
                             row.title = results[i].title;
                             row.id = results[i].id;
@@ -292,6 +299,8 @@ module.exports = {
                         row.title = results[i].title;
                         row.id = results[i].id;
                         row.throughDevice = adDevice[row.id];
+                        if(results.client.account < -50)
+                            continue;
 
                         var imageUrl = "";
                         if(results[i].advertisementImage){

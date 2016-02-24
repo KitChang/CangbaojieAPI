@@ -271,7 +271,7 @@ module.exports = {
                         }
                         var returnAds = [];
                         for (var i = 0; i<results.length; i++) {
-                            if(results.client.account < -50)
+                            if(results[i].client.account < -50)
                                 continue;
                             var row = {};
                             row.title = results[i].title;
@@ -299,7 +299,7 @@ module.exports = {
                         row.title = results[i].title;
                         row.id = results[i].id;
                         row.throughDevice = adDevice[row.id];
-                        if(results.client.account < -50)
+                        if(results[i].client.account < -50)
                             continue;
 
                         var imageUrl = "";

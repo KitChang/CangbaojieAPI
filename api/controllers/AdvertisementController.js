@@ -26,7 +26,7 @@ module.exports = {
             if(deviceId.indexOf(",")!=-1){
                 deviceId = deviceId.split(",");
             }
-            if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
+            if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId];
             var pushMsg = "藏宝街为您发现神祕宝藏，点击免费抽奖，海量奖品等你拿！";
             if(deviceId.length==1) {
                 devicePushMsg.findOne({device: deviceId[0]}).exec(function (err, pushmsg) {
@@ -59,7 +59,7 @@ module.exports = {
                         res.status(500);
                         res.end();
                         return;
-                    }   
+                    }
                     var lDCouponAdArr = []; var ldCouponIdsArr = [];
                     for(var i = 0; i < lDCoupons.length; i++){
                         lDCouponAdArr.push(lDCoupons[i].advertisement.id);
@@ -114,7 +114,7 @@ module.exports = {
                         for (var i = 0; i<results.length; i++) {
                             var row = {};
                             row.title = results[i].title;
-                            row.id = results[i].id; 
+                            row.id = results[i].id;
                             for (var j=0; j<deviceId.length; j++) {
                                 if (results[i].device.indexOf(deviceId[j]) != -1) {
                                     row.throughDevice = deviceId[j];
@@ -130,17 +130,17 @@ module.exports = {
                             row.imageUrl = imageUrl;
                             returnAds.push(row);
                         }
-                        res.json({ message: pushMsg, advertisements: returnAds}); 
+                        res.json({ message: pushMsg, advertisements: returnAds});
                         return;
                         });
                     });
-                }); 
+                });
                 }else{
                     var returnAds = [];
                     for (var i = 0; i<results.length; i++) {
                         var row = {};
                         row.title = results[i].title;
-                        row.id = results[i].id; 
+                        row.id = results[i].id;
                         for (var j=0; j<deviceId.length; j++) {
                             if (results[i].device.indexOf(deviceId[j]) > -1) {
                                 row.throughDevice = deviceId[j];
@@ -156,7 +156,7 @@ module.exports = {
                         row.imageUrl = imageUrl;
                         returnAds.push(row);
                     }
-                    res.json({ message: pushMsg, advertisements: returnAds}); 
+                    res.json({ message: pushMsg, advertisements: returnAds});
                     return;
                 }
             })
@@ -177,7 +177,7 @@ module.exports = {
             if(deviceId.indexOf(",")!=-1){
                 deviceId = deviceId.split(",");
             }
-            if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId]; 
+            if (Object.prototype.toString.call(deviceId) !== '[object Array]') deviceId = [deviceId];
             var adDevice = {};
             device.find({id: deviceId}).exec(function(err, devicesWithAd){
                 if(err){
@@ -218,7 +218,7 @@ module.exports = {
                         res.status(500);
                         res.end();
                         return;
-                    }   
+                    }
                     var lDCouponAdArr = []; var ldCouponIdsArr = [];
                     for(var i = 0; i < lDCoupons.length; i++){
                         lDCouponAdArr.push(lDCoupons[i].advertisement.id);
@@ -254,7 +254,7 @@ module.exports = {
                         luckyDrawCouponObj.drawCouponExpiredAt = date;
                         luckyDrawCouponArr.push(luckyDrawCouponObj);
                     }
-                        
+
                     if(lDCouponToRemove.length==0)
                         lDCouponToRemove = ["-1"];
                     LuckyDrawCoupon.destroy({id:lDCouponToRemove }).exec(function(err){
@@ -287,11 +287,11 @@ module.exports = {
                             row.imageUrl = imageUrl;
                             returnAds.push(row);
                         }
-                        res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                        res.json({ message: "Advertisements returned", advertisements: returnAds});
                         return;
                         });
                     });
-                }); 
+                });
                 }else{
                     var returnAds = [];
                     for (var i = 0; i<results.length; i++) {
@@ -312,10 +312,10 @@ module.exports = {
                         row.imageUrl = imageUrl;
                         returnAds.push(row);
                     }
-                    res.json({ message: "Advertisements returned", advertisements: returnAds}); 
+                    res.json({ message: "Advertisements returned", advertisements: returnAds});
                     return;
                 }
-                
+
                 })
             });
         });
@@ -329,7 +329,7 @@ module.exports = {
             res.status(400);
             res.end();
             return;
-        }   
+        }
         if(!sessionId){
             sessionId = "-1";
         }
@@ -387,11 +387,11 @@ module.exports = {
                         retAd.quiz = ad.quiz;
                         retAd.drawPerformInterval = ad.drawPerformInterval;
                         retAd.indexUrl = ad.indexUrl;
-                        retAd.mobilePhone = ad.client.mobilePhone;
+                        retAd.phone = ad.client.mobilePhone;
                         retAd.shareTitle = ad.shareTitle;
                         retAd.shareContent = ad.shareContent;
                         retAd.shareLink = ad.shareLink;
-                        res.json(retAd); 
+                        res.json(retAd);
                         res.end();
                         now = moment().toDate();
                         DeviceMonitor.findOne({device: deviceId}).exec(function(err, deviceMon){
@@ -418,7 +418,7 @@ module.exports = {
                         }
                         client.update({id: ad.client.id}, {accessCount: accessCount, account: account}).exec(function(err){});
                         ad.accessCount = ad.accessCount + 1;
-                        
+
                         ad.save(function(err){});
                         var state, city, region, area, category;
                         state = (!dev.state) ? "" : dev.state;
@@ -426,7 +426,7 @@ module.exports = {
                         region = (!dev.region) ? "" : dev.region;
                         street = (!dev.street) ? "" : dev.street;
                         category = (!ad.category) ? "" : ad.category;
-                        
+
                         if(appUserId){
                             logger.info("User "+appUserId+" received advertisement "+adId);
                             access.create({appUser: appUserId, device: deviceId, advertisement: adId, category: category, state: state, city: city, region: region, street: street, client: ad.client, locationType: dev.locationType }).exec(function(err, result){
@@ -441,12 +441,11 @@ module.exports = {
             });
         });
     }
-    
-    
-                
-           
-    
-    
-    
-}
 
+
+
+
+
+
+
+}
